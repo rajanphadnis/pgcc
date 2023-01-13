@@ -17,9 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        working-directory: ./admin2
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PGCCTEETIMES_2FDB6 }}'
           channelId: live
           projectId: pgccteetimes-2fdb6
-          entryPoint: "admin2/"

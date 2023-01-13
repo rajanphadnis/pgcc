@@ -17,7 +17,9 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@master
-      - name: Deploy Functions
-        uses: BIGG-Kaymo/deploy-firebase-functions@v1.0.1
+      - name: Deploy to Firebase
+        working-directory: ./main
+        uses: chrissank/deploy-firebase-functions@1.0.0
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          TARGET: default
