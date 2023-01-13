@@ -1,5 +1,5 @@
 var getOptions = {
-  source: 'cache'
+  source: "cache",
 };
 function getMonday(d) {
   // console.log(d);
@@ -162,9 +162,12 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
     div.innerHTML =
       title +
       "</br>" +
-      parseTime(hours, minutes.substr(-2)) +
+      parseTime(hours, minutes.substring(minutes.length, minutes.length - 2)) +
       " - " +
-      parseTime(hours2, minutes2.substr(-2)) +
+      parseTime(
+        hours2,
+        minutes2.substring(minutes2.length, minutes2.length - 2)
+      ) +
       "</br>" +
       nameString +
       spotsLeft +
@@ -177,9 +180,12 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
     div.innerHTML =
       title +
       "</br>" +
-      parseTime(hours, minutes.substr(-2)) +
+      parseTime(hours, minutes.substring(minutes.length, minutes.length - 2)) +
       " - " +
-      parseTime(hours2, minutes2.substr(-2)) +
+      parseTime(
+        hours2,
+        minutes2.substring(minutes2.length, minutes2.length - 2)
+      ) +
       "</br>" +
       nameString +
       spotsLeft +
@@ -192,9 +198,12 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
     div.innerHTML =
       title +
       "</br>" +
-      parseTime(hours, minutes.substr(-2)) +
+      parseTime(hours, minutes.substring(minutes.length, minutes.length - 2)) +
       " - " +
-      parseTime(hours2, minutes2.substr(-2)) +
+      parseTime(
+        hours2,
+        minutes2.substring(minutes2.length, minutes2.length - 2)
+      ) +
       "</br>" +
       nameString +
       "</br><button class='reg' onclick='register(&quot;" +
@@ -206,9 +215,12 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
     div.innerHTML =
       title +
       "</br>" +
-      parseTime(hours, minutes.substr(-2)) +
+      parseTime(hours, minutes.substring(minutes.length, minutes.length - 2)) +
       " - " +
-      parseTime(hours2, minutes2.substr(-2)) +
+      parseTime(
+        hours2,
+        minutes2.substring(minutes2.length, minutes2.length - 2)
+      ) +
       "</br>" +
       nameString +
       spotsLeft +
@@ -326,7 +338,15 @@ function register(iden) {
         }
         document.getElementById("modalTitle").innerHTML = doc.data().title;
         document.getElementById("modalTime").innerHTML =
-          parseTime(hours, minutes) + " - " + parseTime(hours2, minutes2);
+          parseTime(
+            hours,
+            minutes.substring(minutes.length, minutes.length - 2)
+          ) +
+          " - " +
+          parseTime(
+            hours2,
+            minutes2.substring(minutes2.length, minutes2.length - 2)
+          );
         document.getElementById("modalthree").innerHTML =
           "<p>" +
           doc.data().three +
@@ -380,7 +400,9 @@ function write() {
     var tom = tomorrow.getTime() / 1000;
     var cardD = cardDate.getTime() / 1000;
     if (cardD < tom) {
-      alert("Sorry, you can't register for a lesson less than 24 hours before the event.");
+      alert(
+        "Sorry, you can't register for a lesson less than 24 hours before the event."
+      );
     } else {
       ref.update({
         registered: firebase.firestore.FieldValue.increment(1),
@@ -479,6 +501,9 @@ document.getElementById("accept").addEventListener("click", write);
 document.getElementById("close-button2").addEventListener("click", () => {
   document.querySelector(".modal2").classList.toggle("show-modal2");
 });
+document.getElementById("close-button").addEventListener("click", () => {
+  document.querySelector(".modal").classList.toggle("show-modal");
+});
 document.getElementById("deny").addEventListener("click", () => {
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("modalTitle").innerHTML = "Loading...";
@@ -543,10 +568,12 @@ firebase.auth().onAuthStateChanged(function (user) {
     navBar.style.display = "flex";
     email = user.email;
     name = user.displayName;
-    if (email.toString().includes("golfcollege.edu") || email.toString().includes("rajansd28@gmail.com")) {
+    if (
+      email.toString().includes("golfcollege.edu") ||
+      email.toString().includes("rajansd28@gmail.com")
+    ) {
       initCalendar();
-    }
-    else {
+    } else {
       alert("Please sign in using your golfcollege account");
       firebase
         .auth()

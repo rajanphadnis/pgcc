@@ -9,7 +9,7 @@
   <title>PGCC | Schedule Tee Times</title>
   <link rel="stylesheet" type="text/css" href="../styles/inline.css">
   <link rel="stylesheet" type="text/css" href="../styles/SignIn.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <script src="/__/firebase/7.13.2/firebase-app.js"></script>
   <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
   <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
@@ -46,7 +46,7 @@
 <body>
   <div class="modal">
     <div class="modal-content">
-      <span class="close-button">&times;</span>
+      <span id="close-button">&times;</span>
       <h1 id="modalTitle">Loading...</h1>
       <p id="modalTime">Loading...</p>
       <p id="modalthree">Loading...</p>
@@ -58,15 +58,15 @@
       <span id="close-button2">&times;</span>
       <h1 id="modalTitle2">More</h1>
       <div id="modalTime2">
-        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
             picture_as_pdf
           </span><a target="_blank"
             href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf">Student
             Handbook</a></div>
-        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
             picture_as_pdf
           </span><a target="_blank" href="/InstructionGuidelines.pdf">COVID-19 Instruction Guidelines</a></div>
-        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
             picture_as_pdf
           </span><a target="_blank" href="/TournamentSheet.pdf">COVID-19 Tournament Changes</a></div>
       </div>
@@ -75,10 +75,10 @@
   <div id="MainContent">
     <div id="navigation">
       <a href="./" style="color: #0B419A;">
-        <i class="material-icons" style="color: #0B419A;">sports_golf</i>
+        <i class="material-symbols-outlined" style="color: #0B419A;">sports_golf</i>
         <br>Tee Times</a>
       <a href="./lessons/">
-        <i class="material-icons">golf_course</i>
+        <i class="material-symbols-outlined">golf_course</i>
         <br>Lessons</a>
     </div>
     <div id="titleBar2">
@@ -103,18 +103,26 @@
         made after it has been faxed. Report to the pro shop and show your current student I.D. when you check in for
         your tee
         time or lesson.</br><a target="_blank"
-          href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf">Student
-          Handbook</a></br><a target="_blank" href="/InstructionGuidelines.pdf">COVID-19 Instruction
-          Guidelines</a></br><a target="_blank" href="/TournamentSheet.pdf">COVID-19 Tournament Changes</a></br><a
+          href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf"><span class="material-symbols-outlined">
+            picture_as_pdf
+          </span>Student
+          Handbook</a></br><a target="_blank" href="/InstructionGuidelines.pdf"><span class="material-symbols-outlined">
+            picture_as_pdf
+          </span>COVID-19 Instruction
+          Guidelines</a></br><a target="_blank" href="/TournamentSheet.pdf"><span class="material-symbols-outlined">
+            picture_as_pdf
+          </span>COVID-19 Tournament Changes</a></br><a
           target="_blank"
-          href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/">Temecula Campus</a>
+          href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/"><span class="material-symbols-outlined">
+            link
+            </span>Temecula Campus</a>
           <!-- <button
           id="more">More</button> -->
         </p>
       <div class="hCenter">
-        <button id="previous" disabled><span class="material-icons">
+        <button id="previous" disabled><span class="material-symbols-outlined">
             arrow_back_ios
-          </span></button><button id="next"><span class="material-icons">
+          </span></button><button id="next"><span class="material-symbols-outlined">
             arrow_forward_ios
           </span></button>
       </div>
