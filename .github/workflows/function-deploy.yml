@@ -26,8 +26,7 @@ jobs:
         with:
             path: ~/.npm
             key: ${{ runner.os }}-node-${{ hashFiles('**/functions/package-lock.json') }}
-            restore-keys: |
-            ${{ runner.os }}-node-
+            restore-keys: ${{ runner.os }}-node-
       - name: Build Cloud Functions
         run: cd functions && npm ci
       - name: Create SA key
