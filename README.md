@@ -1,3 +1,12 @@
+# Deploy Status
+## Main Site
+[![Admin 1 Hosting Deploy](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-admin.yml/badge.svg?branch=main)](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-admin.yml) 
+[![Course 1 Hosting Deploy](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-main.yml/badge.svg?branch=main)](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-main.yml)
+[![Firebase Functions Deploy](https://github.com/rajanphadnis/pgcc/actions/workflows/function-deploy.yml/badge.svg?branch=main)](https://github.com/rajanphadnis/pgcc/actions/workflows/function-deploy.yml)
+## Location 2 (site inactive)
+[![Admin 2 Hosting Deploy](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-admin2.yml/badge.svg?branch=main)](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-admin2.yml)
+[![Course 2 Hosting Deploy](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-main2.yml/badge.svg?branch=main)](https://github.com/rajanphadnis/pgcc/actions/workflows/hosting-main2.yml)
+
 # Tee Time and Lesson Scheduler
 Built for [PGCC](https://golfcollege.edu/) by Rajan Phadnis
 
