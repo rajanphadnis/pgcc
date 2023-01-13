@@ -105,7 +105,7 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
       exists = true;
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     exists = false;
   }
   if (max == regis) {
@@ -168,7 +168,7 @@ function register(iden) {
       var formattedTime2 = hours2 + ":" + minutes2.substr(-2);
       var maxNum = "<input id='maxNum' type='number'/>";
       var descInp = "<input id='descInp' type='text'/>";
-      var listDays = '<input id="days-select" type="number">';
+      var listDays = '<input id="days-select" type="date">';
       var signedUp;
       var originalString = doc.data().signedUp;
       var newThng = [];
@@ -192,7 +192,9 @@ function register(iden) {
       //   signedUp = "none";
       // }
       document.getElementById("modalTitle").innerHTML =
-        "<input id='titleInp' type='text' value='" + doc.data().title + "'/>";
+        "Course: <input id='titleInp' type='text' value='" +
+        doc.data().title +
+        "'/>";
       document.getElementById("modalTime").innerHTML =
         "<p>Day:</p>" +
         listDays +
@@ -209,9 +211,11 @@ function register(iden) {
       document.getElementById("startInp").value = parseDate(doc.data().start);
       document.getElementById("endInp").value = parseDate(doc.data().end);
       document.getElementById("days-select").value =
+        doc.data().day.toString().substr(4, 4) +
+        "-" +
         doc.data().day.toString().substr(2, 2) +
-        doc.data().day.toString().substr(0, 2) +
-        doc.data().day.toString().substr(4, 4);
+        "-" +
+        doc.data().day.toString().substr(0, 2);
       identity = iden;
       document.getElementById("accept").disabled = false;
     })
@@ -242,6 +246,12 @@ function unParse(time) {
   return Date.parse("1-Jan-1970 " + time).getTime() / 1000;
 }
 function write() {
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
   var ref = db.collection("database2/schedule/TeeTimes").doc(identity);
   ref.update({
     max: document.getElementById("maxNum").value,
@@ -249,10 +259,7 @@ function write() {
     title: document.getElementById("titleInp").value,
     start: unParse(document.getElementById("startInp").value),
     end: unParse(document.getElementById("endInp").value),
-    day:
-      document.getElementById("days-select").value.toString().substr(2, 2) +
-      document.getElementById("days-select").value.toString().substr(0, 2) +
-      document.getElementById("days-select").value.toString().substr(4, 4),
+    day: date,
   });
   document.querySelector(".modal").classList.toggle("show-modal");
 }
@@ -265,16 +272,21 @@ function download(file, text) {
   document.body.removeChild(element);
 }
 function newEntry() {
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
+    console.log(raw);
+    console.log(date);
   db.collection("database2/schedule/TeeTimes").add({
     max: document.getElementById("maxNum").value,
     three: document.getElementById("descInp").value,
     title: document.getElementById("titleInp").value,
     start: unParse(document.getElementById("startInp").value),
     end: unParse(document.getElementById("endInp").value),
-    day:
-      document.getElementById("days-select").value.toString().substr(2, 2) +
-      document.getElementById("days-select").value.toString().substr(0, 2) +
-      document.getElementById("days-select").value.toString().substr(4, 4),
+    day: date,
     registered: 0,
   });
   document.querySelector(".modal").classList.toggle("show-modal");
@@ -315,9 +327,9 @@ document.getElementById("plus").addEventListener("click", () => {
   console.log("plus");
   var maxNum = "<input id='maxNum' type='number'/>";
   var descInp = "<input id='descInp' type='text'/>";
-  var listDays = '<input id="days-select" type="number">';
+  var listDays = '<input id="days-select" type="date">';
   document.getElementById("modalTitle").innerHTML =
-    "Course: </br><input id='titleInp' type='text'/>";
+    "Course: <input id='titleInp' type='text'/>";
   document.getElementById("modalTime").innerHTML =
     "<p>Day:</p>" +
     listDays +
@@ -362,19 +374,13 @@ document.getElementById("del").addEventListener("click", () => {
     });
 });
 function dwnload() {
-  var fileName =
-    document.getElementById("titleInp").value +
-    " " +
-    document.getElementById("days-select").value.substr(0, 2) +
-    "_" +
-    document.getElementById("days-select").value.substr(2, 2) +
-    "_" +
-    document.getElementById("days-select").value.substr(4, 4) +
-    ": " +
-    parseTime(hours1, mins1) +
-    " - " +
-    parseTime(hours2, mins2) +
-    "Roster.txt";
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 4).toString() + raw.substring(2, 2).toString() + raw.substring(0, 2).toString();
+
   // (" Roster.txt");
   var hours1 = document.getElementById("startInp").value.substr(0, 2);
   var mins1 = document.getElementById("startInp").value.substr(3, 2);
@@ -382,19 +388,33 @@ function dwnload() {
   var hours2 = document.getElementById("endInp").value.substr(0, 2);
   var mins2 = document.getElementById("endInp").value.substr(3, 2);
   // console.log(mins2);
-  var fileContent =
+  var fileName =
     document.getElementById("titleInp").value +
+    "_" +
+    date.toString().substr(2, 2) +
+    "-" +
+    date.toString().substr(0, 2) +
+    "-" +
+    date.toString().substr(4, 4)
+  +"_" +
+    parseTime(hours1, mins1) +
+    "-" +
+    parseTime(hours2, mins2) +
+    "_Roster.txt";
+  var description = document.getElementById("descInp").value;
+  var fileContent =
+    document.getElementById("titleInp").value + " \r\n" + description + 
     "\r\n" +
-    document.getElementById("days-select").value.substr(0, 2) +
-    "/" +
-    document.getElementById("days-select").value.substr(2, 2) +
-    "/" +
-    document.getElementById("days-select").value.substr(4, 4) +
+    date.toString().substr(2, 2) +
+    "-" +
+    date.toString().substr(0, 2) +
+    "-" +
+    date.toString().substr(4, 4) +
     ": " +
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
-    "\r\n" +
+    "\r\n-----------------------------\n\n" +
     actualDo;
   var myFile = new Blob([fileContent], { type: "text/plain" });
   window.URL = window.URL || window.webkitURL;
