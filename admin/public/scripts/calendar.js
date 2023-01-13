@@ -326,7 +326,7 @@ document.getElementById("deny").addEventListener("click", () => {
 document.getElementById("plus").addEventListener("click", () => {
   console.log("plus");
   var maxNum = "<input id='maxNum' type='number'/>";
-  var descInp = "<input id='descInp' type='text'/>";
+  var descInp = "<input id='descInp' type='text' value='TEE TIME'/>";
   var listDays = '<input id="days-select" type="date">';
   document.getElementById("modalTitle").innerHTML =
     "Course: <input id='titleInp' type='text'/>";

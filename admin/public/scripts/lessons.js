@@ -188,7 +188,7 @@ function register(iden) {
       var descInp = "<input id='descInp' type='text'/>";
       var signedUp;
       var instructor = "<input type='text' id='instructorInp'>";
-      var listDays = '<input id="days-select" type="number">';
+      var listDays = '<input id="days-select" type="date">';
       var originalString = doc.data().signedUp;
       var newThng = [];
       try {
@@ -211,7 +211,7 @@ function register(iden) {
       //   signedUp = "none";
       // }
       document.getElementById("modalTitle").innerHTML =
-        "<input id='titleInp' type='text' value='" + doc.data().title + "'/>";
+        "Location: <input id='titleInp' type='text' value='" + doc.data().title + "'/>";
       document.getElementById("modalTime").innerHTML =
         "<p>Date:</p>" +
         listDays +
@@ -229,9 +229,11 @@ function register(iden) {
       document.getElementById("startInp").value = parseDate(doc.data().start);
       document.getElementById("endInp").value = parseDate(doc.data().end);
       document.getElementById("days-select").value =
-        doc.data().day.toString().substr(2, 2) +
-        doc.data().day.toString().substr(0, 2) +
-        doc.data().day.toString().substr(4, 4);
+      doc.data().day.toString().substr(4, 4) +
+      "-" +
+      doc.data().day.toString().substr(2, 2) +
+      "-" +
+      doc.data().day.toString().substr(0, 2);
       document.getElementById("instructorInp").value = doc.data().ins;
       identity = iden;
       document.getElementById("accept").disabled = false;
@@ -263,22 +265,31 @@ function unParse(time) {
   return Date.parse("1-Jan-1970 " + time).getTime() / 1000;
 }
 function newEntry() {
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
   db.collection("database2/schedule/lessons").add({
     max: document.getElementById("maxNum").value,
     three: document.getElementById("descInp").value,
     title: document.getElementById("titleInp").value,
     start: unParse(document.getElementById("startInp").value),
     end: unParse(document.getElementById("endInp").value),
-    day:
-      document.getElementById("days-select").value.toString().substr(2, 2) +
-      document.getElementById("days-select").value.toString().substr(0, 2) +
-      document.getElementById("days-select").value.toString().substr(4, 4),
+    day: date,
     registered: 0,
     ins: document.getElementById("instructorInp").value,
   });
   document.querySelector(".modal").classList.toggle("show-modal");
 }
 function write() {
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
   var ref = db.collection("database2/schedule/lessons").doc(identity);
   ref.update({
     max: document.getElementById("maxNum").value,
@@ -286,10 +297,7 @@ function write() {
     title: document.getElementById("titleInp").value,
     start: unParse(document.getElementById("startInp").value),
     end: unParse(document.getElementById("endInp").value),
-    day:
-      document.getElementById("days-select").value.toString().substr(2, 2) +
-      document.getElementById("days-select").value.toString().substr(0, 2) +
-      document.getElementById("days-select").value.toString().substr(4, 4),
+    day: date,
     ins: document.getElementById("instructorInp").value,
   });
   document.getElementById("modalTitle").innerHTML = "Loading...";
@@ -306,7 +314,12 @@ function download(file, text) {
   document.body.removeChild(element);
 }
 function dwnload() {
-  
+  var raw = document
+    .getElementById("days-select")
+    .value.replaceAll("-", "")
+    .toString();
+  var date =
+    raw.substring(raw.length - 4).toString() + raw.substring(2, 2).toString() + raw.substring(0, 2).toString();
   var hours1 = document.getElementById("startInp").value.substr(0, 2);
   var mins1 = document.getElementById("startInp").value.substr(3, 2);
   // console.log(mins1);
@@ -318,31 +331,29 @@ function dwnload() {
     " - " +
     document.getElementById("titleInp").value +
     " " +
-    document.getElementById("days-select").value.substr(0, 2) +
+    date.toString().substr(2, 2) +
+    "-" +
+    date.toString().substr(0, 2) +
+    "-" +
+    date.toString().substr(4, 4) +
     "_" +
-    document.getElementById("days-select").value.substr(2, 2) +
-    "_" +
-    document.getElementById("days-select").value.substr(4, 4) +
-    ": " +
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
     " Roster.txt";
-  var fileContent =
-    document.getElementById("instructorInp").value +
-    " - " +
-    document.getElementById("titleInp").value +
+    var fileContent =
+    document.getElementById("titleInp").value + " \r\n" + description + 
     "\r\n" +
-    document.getElementById("days-select").value.substr(0, 2) +
-    "/" +
-    document.getElementById("days-select").value.substr(2, 2) +
-    "/" +
-    document.getElementById("days-select").value.substr(4, 4) +
+    date.toString().substr(2, 2) +
+    "-" +
+    date.toString().substr(0, 2) +
+    "-" +
+    date.toString().substr(4, 4) +
     ": " +
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
-    "\r\n" +
+    "\r\n-----------------------------\n\n" +
     actualDo;
   var myFile = new Blob([fileContent], { type: "text/plain" });
   window.URL = window.URL || window.webkitURL;
@@ -378,10 +389,10 @@ document.getElementById("plus").addEventListener("click", () => {
   console.log("plus");
   var maxNum = "<input id='maxNum' type='number'/>";
   var descInp = "<input id='descInp' type='text'/>";
-  var listDays = '<input id="days-select" type="number">';
+  var listDays = '<input id="days-select" type="date">';
   var instructor = "<input type='text' id='instructorInp'>";
   document.getElementById("modalTitle").innerHTML =
-    "Course: </br><input id='titleInp' type='text'/>";
+    "Location: <input id='titleInp' type='text'/>";
   document.getElementById("modalTime").innerHTML =
     "<p>Day:</p>" +
     listDays +
