@@ -18,9 +18,6 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./main
     steps:
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -29,3 +26,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PGCCTEETIMES_2FDB6 }}'
           channelId: live
           projectId: pgccteetimes-2fdb6
+          entryPoint: main
