@@ -1,7 +1,7 @@
 # Tee Time and Lesson Scheduler
 Built for [PGCC](https://golfcollege.edu/) by Rajan Phadnis
 
-Originally developed and published: August 12, 2021 - August 28th, 2021.
+Originally developed and published: August 12, 2020 - August 28th, 2020.
 
 Moved to GitHub: January 13th, 2023 for better record keeping and small updates.
 
