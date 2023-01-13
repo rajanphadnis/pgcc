@@ -2,13 +2,16 @@ function unParse(time) {
   return Date.parse("1-Jan-1970 " + time).getTime() / 1000;
 }
 document.getElementById("b").addEventListener("click", () => {
-  var t = document.getElementById("date").value.toString();
+  var raw = document.getElementById("datePicker").value.replaceAll("-", "").toString();
+  var t = raw.substring(raw.length - 4).toString() + raw.substring(0, 4).toString()
+  // var t = document.getElementById("date").value.toString();
   var one = t.substring(0, 2);
   var two = t.substring(2, 4);
   var three = t.substring(4, 8);
   var db = firebase.firestore();
   var ref = db.collection("database2/schedule/TeeTimes");
-  for (var i = 0; i < 10; i++) {
+  var repeatedNum = document.getElementById("repeatedNum").value;
+  for (var i = 0; i < repeatedNum; i++) {
     var next = Date.parse(one + "-" + two + "-" + three)
       .addDays(7 * i)
       .toString("M/d/yyyy");

@@ -13,15 +13,16 @@
 </head>
 
 <body>
-    Date: Format like so: June 9th, 2020: 06092020. Or, May 31st, 2020: 05312020</br>
-    Date: <input id="date" type="text"></br>
-    <!-- Ins: <input id="ins" type="text"> -->
+    Bulk add Tee Times: Add a tee time that is repeated weekly at the specified time. </br></br>Example: if I select Monday, Jan 1st and it repeats five times, one event will be created every Monday starting Jan 1st for five weeks.</br>
+    <!-- Date: <input id="date" type="text"> --></br></br>
+    Starting Date: <input id="datePicker" type="date"></br>
     Course: <input id="title" type="text"></br>
     Description: <input id="desc" type="text"></br>
     Start and End Time:<input id='startInp' type='time'><input id='endInp' type='time'></br>
-    Max: <input id="maxNum" type="number"></br>
+    Maximum Participants: <input id="maxNum" type="number"></br>
+    Repeat Weekly for # of weeks: <input id="repeatedNum" type="number"></br>
     <!-- Ins: <input id="ins" type="text"> -->
-    <button id="b">Submit</button>
+    <button id="b">Create Repeated Tee Time</button>
 </body>
 <script type="text/javascript" src="/scripts/add.js"></script>
 
