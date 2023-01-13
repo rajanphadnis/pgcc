@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin: Add Lesson</title>
+    <script src="/__/firebase/7.13.2/firebase-app.js"></script>
+    <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
+    <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script type="text/javascript" src="/scripts/date.js"></script>
+    <!-- <script src="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.css" /> -->
+</head>
+
+<body>
+    Date: Format like so: June 9th, 2020: 06092020. Or, May 31st, 2020: 05312020</br>
+    Date: <input id="date" type="text"></br>
+    <!-- Ins: <input id="ins" type="text"> -->
+    Course: <input id="title" type="text"></br>
+    Description: <input id="desc" type="text"></br>
+    Start and End Time:<input id='startInp' type='time'><input id='endInp' type='time'></br>
+    Max: <input id="maxNum" type="number"></br>
+    Ins: <input id="ins" type="text"></br>
+    <button id="b">Submit</button>
+</body>
+<script type="text/javascript" src="/scripts/addLesson.js"></script>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage Tee Time Users</title>
+    <script src="/__/firebase/7.13.2/firebase-app.js"></script>
+    <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
+    <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles/loader.css">
+    <link rel="stylesheet" type="text/css" href="/styles/SignIn.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <style>
+        body {
+            text-align: center;
+        }
+        .list {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            width: 35%;
+            border-radius: 30px;
+            background-color: lightgrey;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            align-content: center;
+        }
+
+        .list button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            height: 60px;
+            width: 60px;
+        }
+
+        #main {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+    </style><button onclick="add()">Add User</button>
+    <div id="main">
+
+        <div id="loader" class="loader">
+            <svg class="circular">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10">
+                </circle>
+            </svg>
+        </div>
+    </div>
+    <script src="./scripts/mTTL.js"></script>
+</body>
+
+</html>

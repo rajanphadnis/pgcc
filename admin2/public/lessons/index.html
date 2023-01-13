@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <link rel="canonical" href="https://test.caddiecertification.com/"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin: Lesson Scheduler</title>
+  <link rel="stylesheet" type="text/css" href="../styles/inline.css">
+  <link rel="stylesheet" type="text/css" href="../styles/SignIn.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="/__/firebase/7.13.2/firebase-app.js"></script>
+  <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
+  <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
+  <script src="/__/firebase/7.13.2/firebase-functions.js"></script>
+  <script src="/__/firebase/init.js"></script>
+  <script type="text/javascript" src="/scripts/date.js"></script>
+  <!-- <link rel="manifest" href="./manifest.json"> -->
+  <!-- <link rel="manifest" href="./manifest.webmanifest"> -->
+  <!-- <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="International Caddie Certification Program">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="International Caddie Certification Program">
+  <link rel="apple-touch-icon" href="./images/icons/icon-180x180.png">
+  <meta name="msapplication-TileImage" content="./images/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#3700b3">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="theme-color" content="#3700b3"> -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.css" />
+  <meta name="description" content="Simple, Affordable Caddie Certification">
+</head>
+
+<body>
+  <div class="modal">
+    <div class="modal-content">
+      <span id="close-button">&times;</span>
+      <h1 id="modalTitle">Loading...</h1>
+      <p id="modalTime">Loading...</p>
+      <!-- <p id="modalthree">Loading...</p> -->
+      <button id="deny">Cancel</button><button id="accept">Save Changes</button>
+      <button id="reset">Reset</button>
+      <button id="del">Delete</button>
+      <button onclick="dwnload()" id="dwnld">Download Roster</button><button id="newSave" onclick="newEntry()"
+        style="display: none;">Save</button>
+      <button onclick="addName()" id="addNm">Add Guest</button>
+      <button onclick="removeName()" id="remNm">Remove Guest</button>
+      <a href="/manageLessonsUsers.html" id="manageUsers">Manage users</a>
+    </div>
+  </div>
+  <div id="MainContent">
+    <div id="titleBar">
+      <h1 id="mainTitle">Admin Console: Lessons</h1>
+      <div class="center">
+        <p id="logout">Log Out</p>
+      </div>
+    </div>
+    <div id="navigation">
+      <a href="../">
+        <i class="material-icons">sports_golf</i>
+        <br>Tee Times</a>
+      <a href="./" style="color: #3700b3;">
+        <i class="material-icons" style="color: #3700b3;">golf_course</i>
+        <br>Lessons</a>
+    </div>
+    <p id="instructions">Click the plus button to add an event. Click on an event to view details (including who has
+      already signed up). <a href=/add.html>Bulk Add Tee Times</a>, <a href="/addLesson.html">Bulk Add Lessons</a>, <a
+        href="/sum.html">Instructor Lesson Summary - Weekly</a>, <a
+        href="/sumMonth.html">Instructor Lesson Summary - Monthly</a>, <a
+        href="/sumCalendar.html">Tee Time Summary - Weekly</a>, <a
+        href="/sumCalendarMonth.html">Tee Time Summary - Monthly</a>, <a
+        href="/deleteLessons.html">Mass Delete Lessons</a>, <a
+        href="/delete.html">Mass Delete Tee Times</a>, <a target="_blank"
+        href="https://datastudio.google.com/embed/reporting/5c11b4be-9035-4265-be9c-123176d36cbe/page/GUeNB">Analytics</a></p>
+    <div id="titleBar">
+      <p id="plus"><span class="material-icons">
+          add_circle_outline
+        </span></p>
+      <div class="hCenter">
+        <button id="previous" disabled><span class="material-icons">
+            arrow_back_ios
+          </span></button><button id="next"><span class="material-icons">
+            arrow_forward_ios
+          </span></button>
+
+      </div>
+    </div>
+    <div id="dayLabelsDiv">
+      <p>Sunday</p>
+      <p>Monday</p>
+      <p>Tuesday</p>
+      <p>Wednesday</p>
+      <p>Thursday</p>
+      <p>Friday</p>
+      <p>Saturday</p>
+    </div>
+    <div id="days">
+    </div>
+
+  </div>
+
+  </div>
+  <div style="display: none;" id="sign-inDiv">
+    <div class='box'>
+      <div class='wave -one'></div>
+      <div class='wave -two'></div>
+      <div class='wave -three'></div>
+    </div>
+    <div id="centerLogin">
+      <h1 id="loginH1">Test</h1>
+      <div id="inner">
+        Login or Create Account
+        <div id="firebaseui-auth-container"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="../scripts/lessons.js"></script>
+  <!-- Have a standard template for all lessons, then get address bar data, and get firebase data based off the address bar data. Fill in dynamically where needed. -->
+</body>
+
+</html>

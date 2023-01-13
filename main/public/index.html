@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="canonical" href="https://pgccteetimes.com/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PGCC | Schedule Tee Times</title>
+  <link rel="stylesheet" type="text/css" href="../styles/inline.css">
+  <link rel="stylesheet" type="text/css" href="../styles/SignIn.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="/__/firebase/7.13.2/firebase-app.js"></script>
+  <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
+  <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
+  <!-- <script src="/__/firebase/7.13.2/firebase-functions.js"></script> -->
+  <script src="/__/firebase/init.js"></script>
+  <script src="/scripts/date.js"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="./styles/loader.css"> -->
+  <!-- <link rel="manifest" href="./manifest.json"> -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Professional Golfers Career College Scheduling">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Professional Golfers Career College Scheduling">
+  <link rel="apple-touch-icon" href="./images/icons/icon-180x180.png">
+  <meta name="msapplication-TileImage" content="./images/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#0B419A">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="theme-color" content="#0B419A">
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.css" />
+  <meta name="description" content="PGCC Scheduler">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162932781-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-162932781-1');
+</script>
+</head>
+
+<body>
+  <div class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h1 id="modalTitle">Loading...</h1>
+      <p id="modalTime">Loading...</p>
+      <p id="modalthree">Loading...</p>
+      <button id="deny">Cancel</button><button id="accept">Register</button>
+    </div>
+  </div>
+  <div class="modal2">
+    <div class="modal-content2">
+      <span id="close-button2">&times;</span>
+      <h1 id="modalTitle2">More</h1>
+      <div id="modalTime2">
+        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+            picture_as_pdf
+          </span><a target="_blank"
+            href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf">Student
+            Handbook</a></div>
+        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+            picture_as_pdf
+          </span><a target="_blank" href="/InstructionGuidelines.pdf">COVID-19 Instruction Guidelines</a></div>
+        <div style="width: fit-content!important;" class="center"><span class="material-icons">
+            picture_as_pdf
+          </span><a target="_blank" href="/TournamentSheet.pdf">COVID-19 Tournament Changes</a></div>
+      </div>
+    </div>
+  </div>
+  <div id="MainContent">
+    <div id="navigation">
+      <a href="./" style="color: #0B419A;">
+        <i class="material-icons" style="color: #0B419A;">sports_golf</i>
+        <br>Tee Times</a>
+      <a href="./lessons/">
+        <i class="material-icons">golf_course</i>
+        <br>Lessons</a>
+    </div>
+    <div id="titleBar2">
+      <div id="imgDiv"><img src="/images/logo.jpg" /></div>
+      <h1 id="mainTitle">Tee Time Scheduling</h1>
+      <div id="lgout" style="width: 30%; align-items: flex-end;" class="center">
+        <p id="logout">Log Out</p>
+      </div>
+    </div>
+    <div id="titleBar">
+      <p id="instructions">The tee and lesson sheets will be posted on Friday for the following week. Each student is
+        responsible for their own name on the tee and lesson sheets. You should plan your week as to when you want to
+        practice, take lessons, or play.
+        If you are not in school on that day, you will not be allowed to play, take
+        lessons, or use the practice range. If you play golf, take lessons, or use the practice range on a day that you
+        are
+        not in school, your privileges will be suspended for one week. 2nd offense - 2-
+        week suspension, etc. Any cancellation of your tee time or lesson must take place no later than 24
+        hours prior to your tee time or lesson. No shows - any student who does not show up for their tee time will be
+        responsible for paying their green fee ($25.00) before their playing
+        privileges are restored. Tee sheets are faxed 24 hours in advance. No changes to the tee sheet will be
+        made after it has been faxed. Report to the pro shop and show your current student I.D. when you check in for
+        your tee
+        time or lesson.</br><a target="_blank"
+          href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf">Student
+          Handbook</a></br><a target="_blank" href="/InstructionGuidelines.pdf">COVID-19 Instruction
+          Guidelines</a></br><a target="_blank" href="/TournamentSheet.pdf">COVID-19 Tournament Changes</a></br><a
+          target="_blank"
+          href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/">Temecula Campus</a>
+          <!-- <button
+          id="more">More</button> -->
+        </p>
+      <div class="hCenter">
+        <button id="previous" disabled><span class="material-icons">
+            arrow_back_ios
+          </span></button><button id="next"><span class="material-icons">
+            arrow_forward_ios
+          </span></button>
+      </div>
+    </div>
+    <div id="dayLabelsDiv">
+      <p>Sunday</p>
+      <p>Monday</p>
+      <p>Tuesday</p>
+      <p>Wednesday</p>
+      <p>Thursday</p>
+      <p>Friday</p>
+      <p>Saturday</p>
+    </div>
+    <div id="days">
+
+    </div>
+
+  </div>
+
+  </div>
+  <div style="display: none;" id="sign-inDiv">
+    <div class='box'>
+      <div class='wave -one'></div>
+      <div class='wave -two'></div>
+      <div class='wave -three'></div>
+    </div>
+    <div id="centerLogin">
+      <h1 id="loginH1">PGCC Scheduler</h1>
+      <div id="inner">
+        Login or Create Account
+        <div id="firebaseui-auth-container"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="./scripts/calendar.js"></script>
+  <!-- Have a standard template for all lessons, then get address bar data, and get firebase data based off the address bar data. Fill in dynamically where needed. -->
+</body>
+
+</html>
