@@ -1,8 +1,8 @@
 ---
-name: Something's Broken With Lessons
+name: Something's Broken With Tee Times
 about: Create a report to tell us what's wrong/broken
-title: "[Lesson] *TITLE HERE*"
-labels: bug, Lesson
+title: "[Tee Time] *TITLE HERE*"
+labels: bug, Tee Time
 assignees: rajanphadnis
 
 ---

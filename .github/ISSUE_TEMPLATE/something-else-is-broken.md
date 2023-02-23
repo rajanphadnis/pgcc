@@ -1,8 +1,8 @@
 ---
-name: Something's Broken With Lessons
+name: Something Else is Broken
 about: Create a report to tell us what's wrong/broken
-title: "[Lesson] *TITLE HERE*"
-labels: bug, Lesson
+title: ''
+labels: bug
 assignees: rajanphadnis
 
 ---
