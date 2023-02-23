@@ -1,6 +1,6 @@
 ---
 name: Something's Broken
-about: Create a report to help us improve
+about: Create a report to tell us what's wrong/broken
 title: ''
 labels: bug
 assignees: rajanphadnis
