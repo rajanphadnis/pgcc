@@ -1,7 +1,7 @@
 ---
 name: Something's Broken With Lessons
 about: Create a report to tell us what's wrong/broken
-title: "[Lesson] *TITLE HERE*"
+title: ''
 labels: bug, Lesson
 assignees: rajanphadnis
 

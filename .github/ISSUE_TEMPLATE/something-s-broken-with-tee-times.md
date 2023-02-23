@@ -1,7 +1,7 @@
 ---
 name: Something's Broken With Tee Times
 about: Create a report to tell us what's wrong/broken
-title: "[Tee Time] *TITLE HERE*"
+title: ''
 labels: bug, Tee Time
 assignees: rajanphadnis
 
