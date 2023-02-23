@@ -1,20 +1,18 @@
-name: Add issues to projects
+name: Add issues to project
 
 on:
   issues:
     types:
       - opened
-      
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-jobs:          
-  assign_one_project:
+jobs:
+  add-to-project:
+    name: Add issue to project
     runs-on: ubuntu-latest
-    name: Assign to One Project
     steps:
-    - name: Assign NEW issues and NEW pull requests to project 2
-      uses: srggrs/assign-one-project-github-action@1.2.1
-      if: github.event.action == 'opened'
-      with:
-        project: 'https://github.com/users/rajanphadnis/projects/2'
+      - uses: actions/add-to-project@v0.4.0
+        with:
+          # You can target a repository in a different organization
+          # to the issue
+          project-url: https://github.com/users/rajanphadnis/projects/2
+          github-token: ${{ secrets.PROJ }}
