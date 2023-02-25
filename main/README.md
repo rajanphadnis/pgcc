@@ -8,8 +8,7 @@ graph LR;
     id4[Hide Main Frames]
     id5[Call Firebase Login]
     id6[Hide Login Frame]
-    id7((Alert))
-    id8[Sign out]
+    id7((Alert & Sign Out))
     id9(Firebase Snapshot)
     id10[Setup Week and Day HTML Template]
     
@@ -25,8 +24,7 @@ graph LR;
     id20(["checkDuplicateTime()"])
     
     id13(Firebase Snapshot)
-    id21[I have no idea what this fxn does]
-    
+    id21[I have no idea what this fxn does]    
     
     id1 --> id2
     id2 -- Yes --> id6
@@ -35,24 +33,24 @@ graph LR;
     id5 -- Wait for Redirect --> id1
     id6 --> id3
     id3 -- No --> id7
-    id7 --> id8
-    id8 --> id1
+    id7 --> id1
     id3 -- Yes --> init
-           subgraph init["initCalendar()"]
-           id10 --> id9
-           id9 --> paint
-              subgraph paint["For Each Doc in Snapshot"]
-              addEvent --> overflow
-              overflow --> checkDuplicateTime
-                  subgraph addEvent["addEvent()"]
-                  id11 --> id14 --> id15 --> id16
-                  end
-                  subgraph overflow["overflow()"]
-                  id12 --> id17 --> id18 --> id19 --> id20
-                  end
-                  subgraph checkDuplicateTime["checkDuplicateTime()"]
-                  id13 --> id21
-                  end
-              end
-           end
+        subgraph init["initCalendar()"]
+        id10 --> id9
+        end
+    id9 -- For Each Doc in Snapshot --> paint 
+    subgraph paint[" "]
+    direction LR
+    addEvent --> overflow
+    overflow --> checkDuplicateTime
+        subgraph addEvent["addEvent(docData)"]
+        id11 --> id14 --> id15 --> id16
+        end
+        subgraph overflow["overflow(day)"]
+        id12 --> id17 --> id18 --> id19 --> id20
+        end
+        subgraph checkDuplicateTime["checkDuplicateTime(day)"]
+        id13 --> id21
+        end
+    end
 ```
