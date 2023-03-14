@@ -1,5 +1,5 @@
 var getOptions = {
-  source: 'cache'
+  source: "cache",
 };
 function twentyFourHourCheck() {
   var today = new Date();
@@ -122,23 +122,23 @@ function checkDuplicateTime(day) {
     .where("day", "==", day)
     .get(getOptions)
     .then((snap) => {
-      snap.forEach((iden) => {
+      snap.forEach((lesson) => {
         try {
-          var timeToCheck = document.getElementById(iden.id).parentElement
+          var timeToCheck = document.getElementById(lesson.id).parentElement
             .childNodes[2];
-          var allChildren = document.getElementById(iden.id).parentElement
-            .parentElement.childNodes;
-          allChildren.forEach((item) => {
-            var otherItem = item.childNodes[2];
+          var lessonProperties = document.getElementById(lesson.id)
+            .parentElement.parentElement.childNodes;
+          lessonProperties.forEach((lessonProperty) => {
+            var otherItem = lessonProperty.childNodes[2];
             if (
               otherItem.data == timeToCheck.data &&
-              (item.childNodes[4].data == "Register" ||
-                document.getElementById(iden.id).innerHTML == "Register")
+              (lessonProperty.childNodes[4].data == "Register" ||
+                document.getElementById(lesson.id).innerHTML == "Register")
             ) {
-              document.getElementById(iden.id).disabled = false;
-              document.getElementById(iden.id).innerText = "Register";
-              item.childNodes[4].disabled = false;
-              item.childNodes[4].innerText = "Register";
+              document.getElementById(lesson.id).disabled = false;
+              document.getElementById(lesson.id).innerText = "Register";
+              lessonProperty.childNodes[4].disabled = false;
+              lessonProperty.childNodes[4].innerText = "Register";
               // console.log("doubled");
               // console.log(otherItem.data);
               // console.log(timeToCheck.data);
@@ -155,41 +155,42 @@ function checkDuplicateTime(day) {
             }
             if (
               otherItem.data == timeToCheck.data &&
-              (item.childNodes[4].data == "Cancel Lesson" ||
-                document.getElementById(iden.id).innerHTML == "Cancel Lesson")
+              (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
+                document.getElementById(lesson.id).innerHTML == "Cancel Lesson")
             ) {
               console.log("cancel lesson thing");
               // console.log(item.nextSibling)
-              item.nextSibling.childNodes[4].disabled = false;
-              item.nextSibling.childNodes[4].innerText = "Register";
+              lessonProperty.nextSibling.childNodes[4].disabled = false;
+              lessonProperty.nextSibling.childNodes[4].innerText = "Register";
             }
           });
-        } catch (err) { }
+        } catch (err) {}
       });
-    }).catch(function (error) {
+    })
+    .catch(function (error) {
       console.log("Error getting cached document:", error);
       db.collection("database2/schedule/lessons")
         .where("day", "==", day)
         .get()
         .then((snap) => {
           // ga('send', 'event', [READ], [DATA], [FIREBASE_READ]);
-          snap.forEach((iden) => {
+          snap.forEach((lesson) => {
             try {
-              var timeToCheck = document.getElementById(iden.id).parentElement
+              var timeToCheck = document.getElementById(lesson.id).parentElement
                 .childNodes[2];
-              var allChildren = document.getElementById(iden.id).parentElement
-                .parentElement.childNodes;
-              allChildren.forEach((item) => {
-                var otherItem = item.childNodes[2];
+              var lessonProperties = document.getElementById(lesson.id)
+                .parentElement.parentElement.childNodes;
+              lessonProperties.forEach((lessonProperty) => {
+                var otherItem = lessonProperty.childNodes[2];
                 if (
                   otherItem.data == timeToCheck.data &&
-                  (item.childNodes[4].data == "Register" ||
-                    document.getElementById(iden.id).innerHTML == "Register")
+                  (lessonProperty.childNodes[4].data == "Register" ||
+                    document.getElementById(lesson.id).innerHTML == "Register")
                 ) {
-                  document.getElementById(iden.id).disabled = false;
-                  document.getElementById(iden.id).innerText = "Register";
-                  item.childNodes[4].disabled = false;
-                  item.childNodes[4].innerText = "Register";
+                  document.getElementById(lesson.id).disabled = false;
+                  document.getElementById(lesson.id).innerText = "Register";
+                  lessonProperty.childNodes[4].disabled = false;
+                  lessonProperty.childNodes[4].innerText = "Register";
                   // console.log("doubled");
                   // console.log(otherItem.data);
                   // console.log(timeToCheck.data);
@@ -206,18 +207,20 @@ function checkDuplicateTime(day) {
                 }
                 if (
                   otherItem.data == timeToCheck.data &&
-                  (item.childNodes[4].data == "Cancel Lesson" ||
-                    document.getElementById(iden.id).innerHTML == "Cancel Lesson")
+                  (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
+                    document.getElementById(lesson.id).innerHTML ==
+                      "Cancel Lesson")
                 ) {
                   console.log("cancel lesson thing");
                   // console.log(item.nextSibling)
-                  item.nextSibling.childNodes[4].disabled = false;
-                  item.nextSibling.childNodes[4].innerText = "Register";
+                  lessonProperty.nextSibling.childNodes[4].disabled = false;
+                  lessonProperty.nextSibling.childNodes[4].innerText =
+                    "Register";
                 }
               });
-            } catch (err) { }
+            } catch (err) {}
           });
-        })
+        });
     });
 }
 function addEvent(title, index, time, time2, id, array, max, regis, ins) {
@@ -463,8 +466,8 @@ function checkDuplicate(iden) {
   var start_pos = time.indexOf("<br>") + 4;
   var end_pos = time.indexOf("<br>", start_pos);
   var test = time.substring(start_pos, end_pos);
-  var wholeParent = document.getElementById(iden).parentNode.parentNode
-    .innerHTML;
+  var wholeParent =
+    document.getElementById(iden).parentNode.parentNode.innerHTML;
   var numMatch = occurrences(wholeParent, test, false);
   console.log(numMatch);
   if (numMatch > 1) {
@@ -561,7 +564,9 @@ function write() {
     var tom = tomorrow.getTime() / 1000;
     var cardD = cardDate.getTime() / 1000;
     if (cardD < tom) {
-      alert("Sorry, you can't register for a lesson less than 24 hours before the event.");
+      alert(
+        "Sorry, you can't register for a lesson less than 24 hours before the event."
+      );
     } else {
       ref.update({
         registered: firebase.firestore.FieldValue.increment(1),
@@ -608,40 +613,21 @@ function overflow(dayToCheck) {
     .where("day", "==", dayToCheck)
     .orderBy("start", "asc")
     .orderBy("ins", "desc")
-    .onSnapshot(function (querySnapshot) {
+    .onSnapshot(function (lessons) {
       var main = [];
       var maxAr = [];
       var registeredAr = [];
       var signedUpAr = [];
       var start = [];
-      querySnapshot.forEach(function (doc) {
-        // try {
-        //   var timeToCheck = document.getElementById(doc.id).parentElement
-        //     .childNodes[2];
-        //   var allChildren = document.getElementById(doc.id).parentElement
-        //     .parentElement.childNodes;
-        //   allChildren.forEach((item) => {
-        //     var otherItem = item.childNodes[2];
-        //     if (
-        //       otherItem.data == timeToCheck.data &&
-        //       (item.childNodes[3].data == "Register" ||
-        //         document.getElementById(doc.id).innerHTML == "Register")
-        //     ) {
-        //       document.getElementById(doc.id).disabled = false;
-        //       document.getElementById(doc.id).innerText = "Register";
-        //       console.log("doubled");
-        //       // console.log(otherItem.data);
-        //       // console.log(timeToCheck.data);
-        //       console.log(doc.id);
-        //     }
-        //   });
-        // } catch (err) {}
-        if (doc.data().max != doc.data().registered) {
-          main.push(doc.id);
-          maxAr.push(doc.data().max);
-          registeredAr.push(doc.data().registered);
-          signedUpAr.push(doc.data().signedUp);
-          start.push(doc.data().start);
+      var instructors = [];
+      lessons.forEach(function (lessonDoc) {
+        if (lessonDoc.data().max != lessonDoc.data().registered) {
+          main.push(lessonDoc.id);
+          maxAr.push(lessonDoc.data().max);
+          registeredAr.push(lessonDoc.data().registered);
+          signedUpAr.push(lessonDoc.data().signedUp);
+          start.push(lessonDoc.data().start);
+          instructors.push(lessonDoc.data().ins);
         }
       });
       var exists = false;
@@ -678,12 +664,23 @@ function overflow(dayToCheck) {
         // console.log("last item not fully registered event");
       }
 
-      main.slice(1).forEach((item) => {
-        try {
-          document.getElementById(item).innerText = "Closed";
-          document.getElementById(item).disabled = true;
-        } catch (err) {
-          // console.log("couldn't add closed tag");
+      var uniqueInstructors = new Set(instructors);
+      var totalUniqueInstructors = uniqueInstructors.length;
+      var lessonsToStayOpen = [];
+
+      uniqueInstructors.forEach((instructor) => {
+        var indexOfIDToGet = instructors.indexOf(instructor);
+        lessonsToStayOpen.push(main[indexOfIDToGet]);
+      });
+
+      main.forEach((workingID) => {
+        if (!lessonsToStayOpen.includes(workingID)) {
+          try {
+            document.getElementById(workingID).innerText = "Closed";
+            document.getElementById(workingID).disabled = true;
+          } catch (err) {
+            // console.log("couldn't add closed tag");
+          }
         }
       });
       checkDuplicateTime(dayToCheck);
@@ -705,6 +702,12 @@ function overflow(dayToCheck) {
     });
 }
 document.getElementById("accept").addEventListener("click", write);
+document.getElementById("plus").addEventListener("click", () => {
+  console.log("plus");
+  document.querySelector(".modal2").classList.toggle("show-modal2");
+  // document.getElementById("newSave").style.display = "inline";
+  // document.getElementById("accept").style.display = "none";
+});
 document.getElementById("deny").addEventListener("click", () => {
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("modalTitle").innerHTML = "Loading...";
@@ -764,12 +767,19 @@ var activePane = 0;
 var name;
 var fullArray = [];
 var modal = document.querySelector(".modal");
+var infoModal = document.querySelector(".modal2");
+function toggleInfoModal() {
+  infoModal.classList.toggle("show-modal2");
+}
 function toggleModal() {
   modal.classList.toggle("show-modal");
 }
 function windowOnClick(event) {
   if (event.target === modal) {
     toggleModal();
+  }
+  if (event.target === infoModal) {
+    toggleInfoModal();
   }
 }
 // firebase
@@ -792,10 +802,12 @@ firebase.auth().onAuthStateChanged(function (user) {
     // trigger.addEventListener("click", toggleModal);
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
-    if (email.toString().includes("golfcollege.edu") || email.toString().includes("rajansd28@gmail.com")) {
+    if (
+      email.toString().includes("golfcollege.edu") ||
+      email.toString().includes("rajansd28@gmail.com")
+    ) {
       initCalendar();
-    }
-    else {
+    } else {
       alert("Please sign in using your golfcollege account");
       firebase
         .auth()

@@ -498,6 +498,13 @@ function overflow(dayToCheck) {
     });
 }
 document.getElementById("accept").addEventListener("click", write);
+document.getElementById("plus").addEventListener("click", () => {
+  console.log("plus");
+  document.querySelector(".modal2").classList.toggle("show-modal2");
+  // document.getElementById("newSave").style.display = "inline";
+  // document.getElementById("accept").style.display = "none";
+});
+window.addEventListener("click", windowOnClick);
 document.getElementById("close-button2").addEventListener("click", () => {
   document.querySelector(".modal2").classList.toggle("show-modal2");
 });
@@ -555,6 +562,18 @@ var email;
 var identity;
 var activePane = 0;
 var name;
+var infoModal = document.querySelector(".modal2");
+function toggleInfoModal() {
+  infoModal.classList.toggle("show-modal2");
+}
+function windowOnClick(event) {
+  // if (event.target === modal) {
+  //   toggleModal();
+  // }
+  if (event.target === infoModal) {
+    toggleInfoModal();
+  }
+}
 // firebase
 //   .firestore()
 //   .enablePersistence()

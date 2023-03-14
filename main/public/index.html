@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="../styles/inline.css">
   <link rel="stylesheet" type="text/css" href="../styles/SignIn.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="/__/firebase/7.13.2/firebase-app.js"></script>
   <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
   <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
@@ -56,53 +57,18 @@
   <div class="modal2">
     <div class="modal-content2">
       <span id="close-button2">&times;</span>
-      <h1 id="modalTitle2">More</h1>
+      <h1 id="modalTitle2">Tee Time and Lesson Information</h1>
       <div id="modalTime2">
-        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
-            picture_as_pdf
-          </span><a target="_blank"
-            href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf">Student
-            Handbook</a></div>
-        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
-            picture_as_pdf
-          </span><a target="_blank" href="/InstructionGuidelines.pdf">COVID-19 Instruction Guidelines</a></div>
-        <div style="width: fit-content!important;" class="center"><span class="material-symbols-outlined">
-            picture_as_pdf
-          </span><a target="_blank" href="/TournamentSheet.pdf">COVID-19 Tournament Changes</a></div>
-      </div>
-    </div>
-  </div>
-  <div id="MainContent">
-    <div id="navigation">
-      <a href="./" style="color: #0B419A;">
-        <i class="material-symbols-outlined" style="color: #0B419A;">sports_golf</i>
-        <br>Tee Times</a>
-      <a href="./lessons/">
-        <i class="material-symbols-outlined">golf_course</i>
-        <br>Lessons</a>
-    </div>
-    <div id="titleBar2">
-      <div id="imgDiv"><img src="/images/logo.jpg" /></div>
-      <h1 id="mainTitle">Tee Time Scheduling</h1>
-      <div id="lgout" style="width: 30%; align-items: flex-end;" class="center">
-        <p id="logout">Log Out</p>
-      </div>
-    </div>
-    <div id="titleBar">
-      <p id="instructions">The tee and lesson sheets will be posted on Friday for the following week. Each student is
-        responsible for their own name on the tee and lesson sheets. You should plan your week as to when you want to
-        practice, take lessons, or play.
-        If you are not in school on that day, you will not be allowed to play, take
-        lessons, or use the practice range. If you play golf, take lessons, or use the practice range on a day that you
-        are
-        not in school, your privileges will be suspended for one week. 2nd offense - 2-
-        week suspension, etc. Any cancellation of your tee time or lesson must take place no later than 24
-        hours prior to your tee time or lesson. No shows - any student who does not show up for their tee time will be
-        responsible for paying their green fee ($25.00) before their playing
-        privileges are restored. Tee sheets are faxed 24 hours in advance. No changes to the tee sheet will be
-        made after it has been faxed. Report to the pro shop and show your current student I.D. when you check in for
-        your tee
-        time or lesson.</br><a target="_blank"
+        <p>The tee and lesson sheets will be posted on Friday for the following week. Each student is responsible for
+          their own name on the tee and lesson sheets. You should plan your week as to when you want to practice, take
+          lessons, or play.</br></br>If you are not in school on that day, you will not be allowed to play, take lessons, or
+          use the practice range. If you play golf, take lessons, or use the practice range on a day that you are
+          not in school, your privileges will be suspended for one week. 2nd offense - 2- week suspension, etc. Any
+          cancellation of your tee time or lesson must take place no later than 24 hours prior to your tee time or
+          lesson. No shows - any student who does not show up for their tee time will be responsible for paying their
+          green fee ($25.00) before their playing privileges are restored. </br></br>Tee sheets are faxed 24 hours in advance. No
+          changes to the tee sheet will be made after it has been faxed. Report to the pro shop and show your current
+          student I.D. when you check in for your tee time or lesson.</br></p><a target="_blank"
           href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf"><span class="material-symbols-outlined">
             picture_as_pdf
           </span>Student
@@ -116,9 +82,29 @@
           href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/"><span class="material-symbols-outlined">
             link
             </span>Temecula Campus</a>
-          <!-- <button
-          id="more">More</button> -->
-        </p>
+      </div>
+    </div>
+  </div>
+  <div id="MainContent">
+    <div id="titleBar2">
+      <div id="imgDiv"><img src="/images/logo.jpg" /></div>
+      <h1 id="mainTitle">Tee Time Scheduling</h1>
+      <div id="lgout" style="width: 30%; align-items: flex-end;" class="center">
+        <button id="logout">Log Out</button>
+      </div>
+    </div>
+    <div id="navigation">
+      <a href="./" style="color: #0B419A;">
+        <i class="material-symbols-outlined" style="color: #0B419A;">sports_golf</i>
+        <br>Tee Times</a>
+      <a href="./lessons/">
+        <i class="material-symbols-outlined">golf_course</i>
+        <br>Lessons</a>
+    </div>
+    <div id="titleBar">
+      <div id="infoButton"><p id="plus"><span class="material-icons">
+        info
+      </span></p><p>Info</p></div>
       <div class="hCenter">
         <button id="previous" disabled><span class="material-symbols-outlined">
             arrow_back_ios
