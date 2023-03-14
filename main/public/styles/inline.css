@@ -391,9 +391,9 @@ body {
   .day {
     background-color: #ffffff;
   }
-  #titleBar {
+  /* #titleBar {
     flex-direction: column;
-  }
+  } */
   #titleBar2 {
     flex-direction: column;
     text-align: center;
@@ -405,12 +405,18 @@ body {
   #lgout {
     align-items: center!important;
     width: 30%;
+    margin-bottom: 20px;
   }
   #instructions {
     text-align: center;
   }
   .modal-content {
     width: 20rem;
+  }
+  .modal-content2 {
+    width: 60%;
+    max-height: 70%;
+    overflow: scroll;
   }
   #mainTitle {
     width: 100%;
