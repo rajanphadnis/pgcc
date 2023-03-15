@@ -2,29 +2,121 @@
 <html lang="en">
 
 <head>
-    <title>Admin: Add Tee Times</title>
+    <title>Admin: Bulk Add Events</title>
     <script src="/__/firebase/7.13.2/firebase-app.js"></script>
     <script src="/__/firebase/7.13.2/firebase-auth.js"></script>
     <script src="/__/firebase/7.13.2/firebase-firestore.js"></script>
     <script src="/__/firebase/init.js"></script>
     <script type="text/javascript" src="/scripts/date.js"></script>
-    <!-- <script src="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/styles/loader.css">
+    <link rel="stylesheet" type="text/css" href="/styles/SignIn.css">
+    <link rel="stylesheet" type="text/css" href="/styles/add.css">
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.6.0/firebaseui.css" />
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    Bulk add Tee Times: Add a tee time that is repeated weekly at the specified time. </br></br>Example: if I select
-    Monday, Jan 1st and it repeats five times, one event will be created every Monday starting Jan 1st for five
-    weeks.</br>
-    <!-- Date: <input id="date" type="text"> --></br></br>
-    Starting Date: <input id="datePicker" type="date"></br>
-    Course: <input id="title" type="text"></br>
-    Description: <input id="desc" type="text"></br>
-    Start and End Time:<input id='startInp' type='time'><input id='endInp' type='time'></br>
-    Maximum Participants: <input id="maxNum" type="number"></br>
-    Repeat Weekly for # of weeks: <input id="repeatedNum" type="number"></br>
-    <!-- Ins: <input id="ins" type="text"> -->
-    <button id="b">Create Repeated Tee Time</button>
+    <div style="display: none;" id="sign-inDiv">
+        <div class='box'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+        </div>
+        <div id="centerLogin">
+            <h1 id="loginH1">Admin Console</h1>
+            <div id="inner">
+                Login to Admin Console
+                <div id="firebaseui-auth-container"></div>
+            </div>
+        </div>
+    </div>
+    <div id="mainContainer">
+        <div id="left-panel">
+            <h1 id="titleH1">Bulk add Tee Times and Lessons</h1>
+            <h3>Step 1: Select an event type to create:</h3>
+            <div id="eventTypeDiv">
+                <button id="ttOption" class="eventSelectorRadio">Tee Times</button>
+                <button id="lessonsOption" class="eventSelectorRadio">Lessons</button>
+            </div>
+            <h3>Step 2: Fill out some basic info:</h3>
+            <div id="basicInfo">
+                <div class="basicInfoDiv">
+                    <label for="title">
+                        <p id="titleLabel"></p>
+                    </label>
+                    <input type="text" id="title" name="title">
+                    </br>
+
+                    <label for="desc">
+                        <p>Description:</p>
+                    </label>
+                    <input type="text" id="desc" name="desc">
+                    </br>
+
+                    <label for="max">
+                        <p>Max Students:</p>
+                    </label>
+                    <input type="number" inputmode="numeric" id="max" name="max" value="1">
+                    </br>
+
+                    <div id="instructorDiv">
+                        <p>Lesson Instructor:</p>
+                        <select name="insDropdown" id="insDropdown">
+                                </select>
+                                <!-- <div><input type="radio" id="existingIns" name="Ins" value="existing">
+                            <label for="existingIns">
+                                
+                            </label>
+                        </div>
+                        <div><input type="radio" id="newIns" name="Ins" value="new">
+                            <label for="newIns">
+                                <input type="text" id="newInsText" name="newInsText">
+                                
+                            </label>
+                        </div> -->
+
+                        </br>
+
+                    </div>
+                </div>
+                <div class="basicInfoDiv">
+                    <label for="date">
+                        <p>Start date:</p>
+                    </label>
+                    <input type="date" id="date" name="date">
+                    </br>
+                    <label for="time">
+                        <p>Start time:</p>
+                    </label>
+                    <input type="time" id="time" name="time">
+                    </br>
+                    <p style="margin-bottom: 10px;">Event Time:</p>
+                    <div id="elapsedDiv">
+                        <input type="number" inputmode="numeric" id="elapsedHrs" name="elapsedHrs" step="1" value="1">
+                        <label for="elapsedHrs">h</label>
+                        <input type="number" inputmode="numeric" id="elapsedMins" name="elapsedMins" step="1" value="0">
+                        <label for="elapsedMins">m</label>
+                    </div>
+                    <label for="occur">
+                        <p>Number of events to create:</p>
+                    </label>
+                    <input type="number" inputmode="numeric" id="occur" name="occur" value="5">
+                </div>
+            </div>
+            <div id="optionDiv">
+                <h3 id="optionDivHeader">Step 3: If everything looks good, create <span id="step3Title">Lessons</span></h3>
+                <button id="create">Create</button>
+            </div>
+
+        </div>
+        <div id="right-panel"><h3 id="h3Date"></h3> <div id="previewPane"></div></div>
+    </div>
+
 </body>
 <script type="text/javascript" src="/scripts/add.js"></script>
 

@@ -1,0 +1,94 @@
+@import "@material/button/dist/mdc.button.min.css";
+@import "@material/textfield/dist/mdc.textfield.min.css";
+@import "@material/select/dist/mdc.select.min.css";
+@import "@material/linear-progress/dist/mdc.linear-progress.min.css";
+@import "@material/card/dist/mdc.card.min.css";
+@import "@material/tabs/dist/mdc.tabs.min.css";
+:root {
+  /* --themeColor: #11B683; */
+  --themeColor: #3700b3;
+  --lightThemeColor: #6200ee;
+  --lighterThemeColor: #b986ff;
+  --cardColor: #964aff;
+  --lightTextColor: #ffffff;
+  --onHoverFadeAnimationTime: 0.5s;
+  --tabbedTextColor: #616161;
+  --desktopRightLeftMargin: 25%;
+  --mobileRightLeftMargin: 4%;
+  --appleFontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --desktopProductCardWidth: 25%;
+  --mobileProductCardWidth: 75%;
+  --slideFadeOutTime: opacity 0.5s;
+}
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+  min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+#content {
+    display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* min-height: 100%; */
+}
+
+#mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+#left-panel {
+  width: 45%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-y: auto;
+  border-right: 2px solid black;
+}
+
+#right-panel {
+  width: 45%;
+  margin: 0px;
+  padding: 0px;
+  min-height: 100%;
+  overflow-y: auto;
+  border-left: 2px solid black;
+}
+
+.button {
+  border: none;
+  border-radius: 3px;
+  background-color: var(--lighterThemeColor);
+  padding: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
+}
+.button:hover {
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+.accessDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#save {
+    width: 20%;
+    margin: auto;
+    margin-top: 40px;
+}
