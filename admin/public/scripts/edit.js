@@ -177,18 +177,22 @@ document.getElementById("save").addEventListener("click", () => {
   var batch = db.batch();
   var insRef = db.collection("admin").doc("instructorList");
   var accessRef = db.collection("admin").doc("main");
-  
+
   for (let i = 1; i <= totalIns; i++) {
-    ins.push(document.getElementById("insTextBox" + i).value);
+    try {
+      ins.push(document.getElementById("insTextBox" + i).value);
+    } catch (error) {}
   }
   batch.update(insRef, { instructors: ins });
   for (let i = 1; i <= totalAccess; i++) {
-    var firestoreString = {};
-    console.log(i);
-    var toEdit = document.getElementById("accessTextBox" + i).value;
-    access.push(toEdit);
-    firestoreString[toEdit] = true;
-    batch.update(accessRef, firestoreString);
+    try {
+      var firestoreString = {};
+      console.log(i);
+      var toEdit = document.getElementById("accessTextBox" + i).value;
+      access.push(toEdit);
+      batch.set(accessRef, {[`${toEdit.toString()}`]: true});
+      console.log({[`${toEdit.toString()}`]: true});
+    } catch (error) {}
   }
   console.log(ins);
   console.log(access);
