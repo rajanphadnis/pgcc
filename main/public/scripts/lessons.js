@@ -113,7 +113,7 @@ function initCalendar() {
           doc.data().ins
         );
         overflow(doc.data().day);
-        checkDuplicateTime(doc.data().day);
+        // checkDuplicateTime(doc.data().day);
       });
     });
 }
@@ -477,7 +477,7 @@ function checkDuplicate(iden) {
   }
 }
 function register(iden) {
-  checkDuplicate(iden);
+  // checkDuplicate(iden);
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("accept").disabled = true;
   var docRef = db.collection("database2/schedule/lessons").doc(iden);
@@ -664,7 +664,7 @@ function overflow(dayToCheck) {
         // console.log("last item not fully registered event");
       }
 
-      var uniqueInstructors = new Set(instructors);
+      var uniqueInstructors = [...new Set(instructors)];
       var totalUniqueInstructors = uniqueInstructors.length;
       var lessonsToStayOpen = [];
 
@@ -683,7 +683,7 @@ function overflow(dayToCheck) {
           }
         }
       });
-      checkDuplicateTime(dayToCheck);
+      // checkDuplicateTime(dayToCheck);
       // Potential problem: can be start.length + 1
       // for (var i = 0; i < start.length; i++) {
       //   var getCurrent = start[i];
