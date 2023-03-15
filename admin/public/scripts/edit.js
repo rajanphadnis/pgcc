@@ -184,18 +184,18 @@ document.getElementById("save").addEventListener("click", () => {
     } catch (error) {}
   }
   batch.update(insRef, { instructors: ins });
-  for (let i = 1; i <= totalAccess; i++) {
+  var firestoreString = {};
+  for (let i = 1; i <= totalAccess+1; i++) {
     try {
-      var firestoreString = {};
       console.log(i);
       var toEdit = document.getElementById("accessTextBox" + i).value;
       access.push(toEdit);
-      batch.set(accessRef, {[`${toEdit.toString()}`]: true});
-      console.log({[`${toEdit.toString()}`]: true});
+      firestoreString[[`${toEdit.toString()}`]] = true;
     } catch (error) {}
-  }
+  }batch.set(accessRef, firestoreString);
   console.log(ins);
   console.log(access);
+  console.log(firestoreString);
   if (confirm("Are you sure you want to save?")) {
     batch.commit().then(() => {
       window.location.href = "/edit.html";
