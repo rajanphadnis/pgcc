@@ -97,6 +97,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 #infoButton p {
   margin: 0px;

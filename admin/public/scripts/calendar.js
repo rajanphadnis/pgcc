@@ -172,6 +172,7 @@ function register(iden) {
       var signedUp;
       var originalString = doc.data().signedUp;
       var newThng = [];
+      registeredUsers = 0;
       try {
         originalString.forEach((name) => {
           var regExp = /\(([^)]+)\)/;
@@ -180,7 +181,8 @@ function register(iden) {
           newThng.push(matches[1]);
         });
         signedUp = newThng.join(", \r\n");
-        actualDo = newThng.join("\r\n");
+        actualDo = newThng.join("\r\n☐ ");
+        registeredUsers = registeredUsers + 1;
       } catch (err) {
         console.log("user isn;t signed up for event");
         signedUp = "none";
@@ -414,7 +416,7 @@ function dwnload() {
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
-    "\r\n-----------------------------\n\n" +
+    "\r\n" + ((actualDo.match(/\r\n/g)||[]).length + 1).toString() + " Participant(s)\r\n-----------------------------\n\n☐ " +
     actualDo;
   var myFile = new Blob([fileContent], { type: "text/plain" });
   window.URL = window.URL || window.webkitURL;
@@ -438,6 +440,7 @@ document.getElementById("next").addEventListener("click", () => {
     console.log("plus not possible");
   }
 });
+
 // function deleteAtPath(path) {
 //   var deleteFn = firebase.functions().httpsCallable('recursiveDelete');
 //   deleteFn({ path: path })
@@ -466,9 +469,22 @@ var email;
 var identity;
 var activePane = 0;
 var actualDo = "none";
+var registeredUsers = 0;
 var docIDActive = "";
-db = firebase.firestore();
+var modal = document.querySelector(".modal");
 
+window.addEventListener("click", windowOnClick);
+function toggleModal() {
+  modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+  if (event.target === modal) {
+    toggleModal();
+  }
+}
+
+db = firebase.firestore();
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     // User is signed in.

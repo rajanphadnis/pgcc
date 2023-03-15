@@ -40,14 +40,18 @@
       <h1 id="modalTitle">Loading...</h1>
       <p id="modalTime">Loading...</p>
       <!-- <p id="modalthree">Loading...</p> -->
-      <button id="deny">Cancel</button><button id="accept">Save Changes</button>
+      <button id="accept">Save Changes</button>
       <button id="newSave" onclick="newEntry()" style="display: none;">Save</button>
-      <button id="reset">Reset</button>
-      <button id="del">Delete</button>
+      </br>
       <button onclick="dwnload()" id="dwnld">Download Roster</button>
       <button onclick="addName()" id="addNm">Add Guest</button>
       <button onclick="removeName()" id="remNm">Remove Guest</button>
       <a href="/manageTeeTImesUsers.html" id="manageUsers">Manage users</a>
+      </br>
+      <button id="deny">Cancel</button>
+      <button id="reset">Reset</button>
+      <button id="del">Delete</button>
+
     </div>
   </div>
   <div id="MainContent">
@@ -65,15 +69,16 @@
         <i class="material-icons">golf_course</i>
         <br>Lessons</a>
     </div>
-    <p id="instructions">Click the plus button to add an event. Click on an event to view details (including who has
-      already signed up). <a href=/add.html>Bulk Add Tee Times</a>, <a href="/addLesson.html">Bulk Add Lessons</a>, <a
-        href="/sum.html">Instructor Lesson Summary - Weekly</a>, <a
-        href="/sumMonth.html">Instructor Lesson Summary - Monthly</a>, <a
-        href="/sumCalendar.html">Tee Time Summary - Weekly</a>, <a
-        href="/sumCalendarMonth.html">Tee Time Summary - Monthly</a>, <a
-        href="/deleteLessons.html">Mass Delete Lessons</a>, <a
-        href="./delete.html">Mass Delete Tee Times</a>, <a target="_blank"
-        href="https://datastudio.google.com/embed/reporting/5c11b4be-9035-4265-be9c-123176d36cbe/page/GUeNB">Analytics</a></p>
+    <div id="instructions">
+      <p>Click the plus button to add an event. Click on an event to view details (including who has
+        already signed up).</p>
+      <div id="utilityLinks"><a href=/add.html>Bulk Add Tee Times and Lessons</a>
+        <a href="/sum.html">Daily Roster</a>
+        <a target="_blank"
+          href="https://datastudio.google.com/embed/reporting/5c11b4be-9035-4265-be9c-123176d36cbe/page/GUeNB">Site
+          Analytics</a>
+      </div>
+    </div>
     <div id="titleBar">
       <p id="plus"><span class="material-icons">
           add_circle_outline
