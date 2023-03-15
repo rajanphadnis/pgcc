@@ -161,7 +161,7 @@ function addEvent(title, index, time, time2, id, array, max, regis, ins) {
   try {
     document.getElementById("day" + index).appendChild(div);
   } catch (err) {
-    console.log("index out of range");
+    // console.log("index out of range");
   }
 }
 function register(iden) {
@@ -199,7 +199,7 @@ function register(iden) {
           newThng.push(matches[1]);
         });
         signedUp = newThng.join(", ");
-        actualDo = newThng.join("\r\n");
+        actualDo = newThng.join("\r\n☐ ");
       } catch (err) {
         console.log("user isn;t signed up for event");
         signedUp = "none";
@@ -211,7 +211,9 @@ function register(iden) {
       //   signedUp = "none";
       // }
       document.getElementById("modalTitle").innerHTML =
-        "Location: <input id='titleInp' type='text' value='" + doc.data().title + "'/>";
+        "Location: <input id='titleInp' type='text' value='" +
+        doc.data().title +
+        "'/>";
       document.getElementById("modalTime").innerHTML =
         "<p>Date:</p>" +
         listDays +
@@ -229,11 +231,11 @@ function register(iden) {
       document.getElementById("startInp").value = parseDate(doc.data().start);
       document.getElementById("endInp").value = parseDate(doc.data().end);
       document.getElementById("days-select").value =
-      doc.data().day.toString().substr(4, 4) +
-      "-" +
-      doc.data().day.toString().substr(2, 2) +
-      "-" +
-      doc.data().day.toString().substr(0, 2);
+        doc.data().day.toString().substr(4, 4) +
+        "-" +
+        doc.data().day.toString().substr(2, 2) +
+        "-" +
+        doc.data().day.toString().substr(0, 2);
       document.getElementById("instructorInp").value = doc.data().ins;
       identity = iden;
       document.getElementById("accept").disabled = false;
@@ -270,7 +272,9 @@ function newEntry() {
     .value.replaceAll("-", "")
     .toString();
   var date =
-    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
+    raw.substring(raw.length - 2).toString() +
+    raw.substring(4, 6).toString() +
+    raw.substring(0, 4).toString();
   db.collection("database2/schedule/lessons").add({
     max: document.getElementById("maxNum").value,
     three: document.getElementById("descInp").value,
@@ -289,7 +293,9 @@ function write() {
     .value.replaceAll("-", "")
     .toString();
   var date =
-    raw.substring(raw.length - 2).toString() + raw.substring(4, 6).toString() + raw.substring(0, 4).toString();
+    raw.substring(raw.length - 2).toString() +
+    raw.substring(4, 6).toString() +
+    raw.substring(0, 4).toString();
   var ref = db.collection("database2/schedule/lessons").doc(identity);
   ref.update({
     max: document.getElementById("maxNum").value,
@@ -319,7 +325,9 @@ function dwnload() {
     .value.replaceAll("-", "")
     .toString();
   var date =
-    raw.substring(raw.length - 4).toString() + raw.substring(2, 2).toString() + raw.substring(0, 2).toString();
+    raw.substring(raw.length - 4).toString() +
+    raw.substring(2, 2).toString() +
+    raw.substring(0, 2).toString();
   var hours1 = document.getElementById("startInp").value.substr(0, 2);
   var mins1 = document.getElementById("startInp").value.substr(3, 2);
   // console.log(mins1);
@@ -341,8 +349,10 @@ function dwnload() {
     " - " +
     parseTime(hours2, mins2) +
     " Roster.txt";
-    var fileContent =
-    document.getElementById("titleInp").value + " \r\n" + description + 
+  var fileContent =
+    document.getElementById("titleInp").value +
+    // " \r\n" +
+    // description +
     "\r\n" +
     date.toString().substr(2, 2) +
     "-" +
@@ -353,7 +363,7 @@ function dwnload() {
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
-    "\r\n-----------------------------\n\n" +
+    "\r\n" + ((actualDo.match(/\r\n/g)||[]).length + 1).toString() + " Participant(s)\r\n-----------------------------\n\n☐ " +
     actualDo;
   var myFile = new Blob([fileContent], { type: "text/plain" });
   window.URL = window.URL || window.webkitURL;
@@ -388,9 +398,9 @@ document.getElementById("accept").addEventListener("click", write);
 document.getElementById("plus").addEventListener("click", () => {
   console.log("plus");
   var maxNum = "<input id='maxNum' type='number'/>";
-  var descInp = "<input id='descInp' type='text'/>";
+  var descInp = "<input id='descInp' type='text' value='LESSON'/>";
   var listDays = '<input id="days-select" type="date">';
-  var instructor = "<input type='text' id='instructorInp'>";
+  var instructor = "<select id='instructorInp'></select>";
   document.getElementById("modalTitle").innerHTML =
     "Location: <input id='titleInp' type='text'/>";
   document.getElementById("modalTime").innerHTML =
@@ -402,6 +412,13 @@ document.getElementById("plus").addEventListener("click", () => {
     descInp +
     "<p>Instructor:</p>" +
     instructor;
+    for (var i = 0; i < instructorMasterArray.length; i++) {
+      var optn = instructorMasterArray[i];
+      var el = document.createElement("option");
+      el.textContent = optn;
+      el.value = optn;
+      document.getElementById("instructorInp").appendChild(el);
+  }
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("newSave").style.display = "inline";
   document.getElementById("accept").style.display = "none";
@@ -489,6 +506,7 @@ var identity;
 var activePane = 0;
 var actualDo = "none";
 var docIDActive = "";
+var instructorMasterArray = [];
 db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(function (user) {
@@ -515,7 +533,16 @@ firebase.auth().onAuthStateChanged(function (user) {
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
     // initCalendarStructure();
-    initCalendar();
+    db.collection("admin")
+      .doc("instructorList")
+      .get()
+      .then((doc) => {
+        instructorMasterArray = doc.data().instructors;
+        initCalendar();
+      })
+      .catch((ee) => {
+        console.log("couldn't contact database");
+      });
 
     document.getElementById("logout").addEventListener("click", (sdv) => {
       firebase
