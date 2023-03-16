@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = "datav3.3";
-var cacheName = "PWA-v4.8";
+var dataCacheName = "datav3.4";
+var cacheName = "PWA-v4.9";
 var filesToCache = [
   "/index.html",
   "/scripts/calendar.js",

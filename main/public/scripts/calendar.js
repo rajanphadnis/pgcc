@@ -1,6 +1,20 @@
 var getOptions = {
   source: "cache",
 };
+var errorMessage = "Sorry, It's On Our End!";
+var loginFrame = document.getElementById("sign-inDiv");
+var mainContent = document.getElementById("MainContent");
+var navBar = document.getElementById("navigation");
+var tabbedColor = "#616161";
+var themeColor = "#096F38";
+var db;
+var email;
+var identity;
+var activePane = 0;
+var name;
+var infoModal = document.querySelector(".modal2");
+var modal = document.querySelector(".modal");
+var maxWeeksToShow = 5;
 function getMonday(d) {
   // console.log(d);
   d = new Date(d);
@@ -13,7 +27,7 @@ function getMonday(d) {
 }
 function clearCalendar() {
   var items = "";
-  for (var chunk = 0; chunk < 11; chunk++) {
+  for (var chunk = 0; chunk < maxWeeksToShow; chunk++) {
     var other = "";
     for (var calendarDay = 0; calendarDay < 7; calendarDay++) {
       var num = calendarDay + chunk * 7;
@@ -50,7 +64,7 @@ function clearCalendar() {
 }
 function initCalendar() {
   var items = "";
-  for (var chunk = 0; chunk < 11; chunk++) {
+  for (var chunk = 0; chunk < maxWeeksToShow; chunk++) {
     var other = "";
     for (var calendarDay = 0; calendarDay < 7; calendarDay++) {
       var num = calendarDay + chunk * 7;
@@ -326,6 +340,12 @@ function register(iden) {
         var formattedTime2 = hours2 + ":" + minutes2.substr(-2);
         var originalString = doc.data().signedUp;
         var newThng = [];
+        var day =
+          doc.data().day.substr(2, 2) +
+          "/" +
+          doc.data().day.substr(0, 2) +
+          "/" +
+          doc.data().day.substr(4, 4);
         try {
           originalString.forEach((name) => {
             var regExp = /\(([^)]+)\)/;
@@ -336,8 +356,11 @@ function register(iden) {
         } catch (err) {
           console.log("user isn't registered for event");
         }
-        document.getElementById("modalTitle").innerHTML = doc.data().title;
+        document.getElementById("modalTitle").innerHTML =
+          "<h1>Tee Time</h1><h3>@ " + doc.data().title + "</h3>";
         document.getElementById("modalTime").innerHTML =
+          day +
+          "</br></br>Lesson Time: " +
           parseTime(
             hours,
             minutes.substring(minutes.length, minutes.length - 2)
@@ -348,10 +371,12 @@ function register(iden) {
             minutes2.substring(minutes2.length, minutes2.length - 2)
           );
         document.getElementById("modalthree").innerHTML =
-          "<p>" +
+          "<p>Description: " +
           doc.data().three +
-          "</p>Participants: <p>" +
-          newThng.join(", ") +
+          "</p><p>Golfer(s): " +
+          (newThng.join(", ") == ""
+            ? "None yet - but you could be the first!"
+            : newThng.join(", ")) +
           "</p>";
         // console.log("Document data:", doc.data());
         identity = iden;
@@ -497,9 +522,43 @@ function overflow(dayToCheck) {
       // console.log("Current cities in CA: ", cities.join(", "));
     });
 }
+function nextWeek() {
+  if (activePane != maxWeeksToShow - 1) {
+    document.getElementById("previous").disabled = false;
+    document.getElementById("week" + activePane).style.display = "none";
+    activePane = activePane + 1;
+    document.getElementById("week" + activePane).style.display = "flex";
+    if (activePane == maxWeeksToShow - 1) {
+      // console.log("done");
+      document.getElementById("next").disabled = true;
+    } else {
+      document.getElementById(
+        "week" + (activePane + 1).toString()
+      ).style.display = "none";
+    }
+  } else {
+    console.log("plus not possible");
+  }
+}
+function previousWeek() {
+  if (activePane != 0) {
+    document.getElementById("next").disabled = false;
+    document.getElementById("week" + activePane).style.display = "none";
+    activePane = activePane - 1;
+    document.getElementById("week" + activePane).style.display = "flex";
+    document.getElementById(
+      "week" + (activePane + 1).toString()
+    ).style.display = "none";
+    if (activePane == 0) {
+      document.getElementById("previous").disabled = true;
+    }
+  } else {
+    console.log("back not possible");
+  }
+}
 document.getElementById("accept").addEventListener("click", write);
-document.getElementById("plus").addEventListener("click", () => {
-  console.log("plus");
+document.onkeydown = checkKey;
+document.getElementById("infoButton").addEventListener("click", () => {
   document.querySelector(".modal2").classList.toggle("show-modal2");
   // document.getElementById("newSave").style.display = "inline";
   // document.getElementById("accept").style.display = "none";
@@ -518,68 +577,36 @@ document.getElementById("deny").addEventListener("click", () => {
   document.getElementById("modalthree").innerHTML = "Loading...";
 });
 document.getElementById("previous").addEventListener("click", () => {
-  if (activePane != 0) {
-    document.getElementById("next").disabled = false;
-    document.getElementById("week" + activePane).style.display = "none";
-    activePane = activePane - 1;
-    document.getElementById("week" + activePane).style.display = "flex";
-    document.getElementById(
-      "week" + (activePane + 1).toString()
-    ).style.display = "none";
-    if (activePane == 0) {
-      document.getElementById("previous").disabled = true;
-    }
-  } else {
-    console.log("back not possible");
-  }
+  previousWeek();
 });
 document.getElementById("next").addEventListener("click", () => {
-  if (activePane != 10) {
-    document.getElementById("previous").disabled = false;
-    document.getElementById("week" + activePane).style.display = "none";
-    activePane = activePane + 1;
-    document.getElementById("week" + activePane).style.display = "flex";
-    if (activePane == 10) {
-      // console.log("done");
-      document.getElementById("next").disabled = true;
-    } else {
-      document.getElementById(
-        "week" + (activePane + 1).toString()
-      ).style.display = "none";
-    }
-  } else {
-    console.log("plus not possible");
-  }
+  nextWeek();
 });
-var errorMessage = "Sorry, It's On Our End!";
-var loginFrame = document.getElementById("sign-inDiv");
-var mainContent = document.getElementById("MainContent");
-var navBar = document.getElementById("navigation");
-var tabbedColor = "#616161";
-var themeColor = "#096F38";
-var db;
-var email;
-var identity;
-var activePane = 0;
-var name;
-var infoModal = document.querySelector(".modal2");
 function toggleInfoModal() {
   infoModal.classList.toggle("show-modal2");
 }
+function toggleModal() {
+  modal.classList.toggle("show-modal");
+}
 function windowOnClick(event) {
-  // if (event.target === modal) {
-  //   toggleModal();
-  // }
+  if (event.target === modal) {
+    toggleModal();
+  }
   if (event.target === infoModal) {
     toggleInfoModal();
   }
 }
-// firebase
-//   .firestore()
-//   .enablePersistence()
-//   .then(function () {
+function checkKey(e) {
+  e = e || window.event;
+  if (e.keyCode == "37") {
+    // left arrow
+    previousWeek();
+  } else if (e.keyCode == "39") {
+    // right arrow
+    nextWeek();
+  }
+}
 db = firebase.firestore();
-
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     // User is signed in.
@@ -671,32 +698,9 @@ firebase.auth().onAuthStateChanged(function (user) {
     };
     // The start method will wait until the DOM is loaded.
     ui.start("#firebaseui-auth-container", uiConfig);
-    // ui.start('#firebaseui-auth-container', {
-    //   signInOptions: [
-    //     'apple.com',
-    //     'microsoft.com',
-    //     'yahoo.com',
-    //   ]
-    // });
   }
 });
-// })
-// .catch(function (err) {
-//   if (err.code == "failed-precondition") {
-//     // Multiple tabs open, persistence can only be enabled
-//     // in one tab at a a time.
-//     // ...
-//     alert(
-//       "You have multiple instances of this app open at the same time. In order for this app to work offline, you must close all other instances of this app."
-//     );
-//   } else if (err.code == "unimplemented") {
-//     alert(
-//       "The browser you are using does not support offline data for this app."
-//     );
-//   } else {
-//     alert("Error: " + err);
-//   }
-// });
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./service-worker.js").then(function () {
     console.log("Service Worker Registered");
