@@ -59,6 +59,8 @@ function clearCalendar() {
 }
 function initCalendar() {
   var items = "";
+  var daysWritten = [];
+  var masterInstructors = [];
   for (var chunk = 0; chunk < 11; chunk++) {
     var other = "";
     for (var calendarDay = 0; calendarDay < 7; calendarDay++) {
@@ -69,6 +71,9 @@ function initCalendar() {
       var day = tomorrow.getDate();
       var month = tomorrow.getMonth() + 1;
       var year = tomorrow.getFullYear();
+      daysWritten.push(
+        String(day).padStart(2, "0") + String(month).padStart(2, "0") + year
+      );
       // console.log(tomorrow);
       other =
         other +
@@ -112,123 +117,131 @@ function initCalendar() {
           doc.data().registered,
           doc.data().ins
         );
-        overflow(doc.data().day);
+        masterInstructors.push(doc.data().ins);
         // checkDuplicateTime(doc.data().day);
       });
-    });
-}
-function checkDuplicateTime(day) {
-  db.collection("database2/schedule/lessons")
-    .where("day", "==", day)
-    .get(getOptions)
-    .then((snap) => {
-      snap.forEach((lesson) => {
-        try {
-          var timeToCheck = document.getElementById(lesson.id).parentElement
-            .childNodes[2];
-          var lessonProperties = document.getElementById(lesson.id)
-            .parentElement.parentElement.childNodes;
-          lessonProperties.forEach((lessonProperty) => {
-            var otherItem = lessonProperty.childNodes[2];
-            if (
-              otherItem.data == timeToCheck.data &&
-              (lessonProperty.childNodes[4].data == "Register" ||
-                document.getElementById(lesson.id).innerHTML == "Register")
-            ) {
-              document.getElementById(lesson.id).disabled = false;
-              document.getElementById(lesson.id).innerText = "Register";
-              lessonProperty.childNodes[4].disabled = false;
-              lessonProperty.childNodes[4].innerText = "Register";
-              // console.log("doubled");
-              // console.log(otherItem.data);
-              // console.log(timeToCheck.data);
-              // console.log(item.childNodes[4]);
-              // console.log(iden.id);
-              // main.slice(2).forEach((item) => {
-              //   try {
-              //     document.getElementById(item).innerText = "Closed";
-              //     document.getElementById(item).disabled = true;
-              //   } catch (err) {
-              //     // console.log("couldn't add closed tag");
-              //   }
-              // });
-            }
-            if (
-              otherItem.data == timeToCheck.data &&
-              (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
-                document.getElementById(lesson.id).innerHTML == "Cancel Lesson")
-            ) {
-              console.log("cancel lesson thing");
-              // console.log(item.nextSibling)
-              lessonProperty.nextSibling.childNodes[4].disabled = false;
-              lessonProperty.nextSibling.childNodes[4].innerText = "Register";
-            }
-          });
-        } catch (err) {}
+      // console.log();
+      // console.log(masterInstructors);
+      var masterUniqueInstructors = [...new Set(masterInstructors)];
+      var uniqueDays = [...new Set(daysWritten)];
+      uniqueDays.forEach((dayToEvaluate) => {
+        // console.log("init");
+        overflow(querySnapshot.docs, dayToEvaluate, masterUniqueInstructors);
       });
-    })
-    .catch(function (error) {
-      console.log("Error getting cached document:", error);
-      db.collection("database2/schedule/lessons")
-        .where("day", "==", day)
-        .get()
-        .then((snap) => {
-          // ga('send', 'event', [READ], [DATA], [FIREBASE_READ]);
-          snap.forEach((lesson) => {
-            try {
-              var timeToCheck = document.getElementById(lesson.id).parentElement
-                .childNodes[2];
-              var lessonProperties = document.getElementById(lesson.id)
-                .parentElement.parentElement.childNodes;
-              lessonProperties.forEach((lessonProperty) => {
-                var otherItem = lessonProperty.childNodes[2];
-                if (
-                  otherItem.data == timeToCheck.data &&
-                  (lessonProperty.childNodes[4].data == "Register" ||
-                    document.getElementById(lesson.id).innerHTML == "Register")
-                ) {
-                  document.getElementById(lesson.id).disabled = false;
-                  document.getElementById(lesson.id).innerText = "Register";
-                  lessonProperty.childNodes[4].disabled = false;
-                  lessonProperty.childNodes[4].innerText = "Register";
-                  // console.log("doubled");
-                  // console.log(otherItem.data);
-                  // console.log(timeToCheck.data);
-                  // console.log(item.childNodes[4]);
-                  // console.log(iden.id);
-                  // main.slice(2).forEach((item) => {
-                  //   try {
-                  //     document.getElementById(item).innerText = "Closed";
-                  //     document.getElementById(item).disabled = true;
-                  //   } catch (err) {
-                  //     // console.log("couldn't add closed tag");
-                  //   }
-                  // });
-                }
-                if (
-                  otherItem.data == timeToCheck.data &&
-                  (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
-                    document.getElementById(lesson.id).innerHTML ==
-                      "Cancel Lesson")
-                ) {
-                  console.log("cancel lesson thing");
-                  // console.log(item.nextSibling)
-                  lessonProperty.nextSibling.childNodes[4].disabled = false;
-                  lessonProperty.nextSibling.childNodes[4].innerText =
-                    "Register";
-                }
-              });
-            } catch (err) {}
-          });
-        });
     });
 }
+// function checkDuplicateTime(day) {
+//   db.collection("database2/schedule/lessons")
+//     .where("day", "==", day)
+//     .get(getOptions)
+//     .then((snap) => {
+//       snap.forEach((lesson) => {
+//         try {
+//           var timeToCheck = document.getElementById(lesson.id).parentElement
+//             .childNodes[2];
+//           var lessonProperties = document.getElementById(lesson.id)
+//             .parentElement.parentElement.childNodes;
+//           lessonProperties.forEach((lessonProperty) => {
+//             var otherItem = lessonProperty.childNodes[2];
+//             if (
+//               otherItem.data == timeToCheck.data &&
+//               (lessonProperty.childNodes[4].data == "Register" ||
+//                 document.getElementById(lesson.id).innerHTML == "Register")
+//             ) {
+//               document.getElementById(lesson.id).disabled = false;
+//               document.getElementById(lesson.id).innerText = "Register";
+//               lessonProperty.childNodes[4].disabled = false;
+//               lessonProperty.childNodes[4].innerText = "Register";
+//               // console.log("doubled");
+//               // console.log(otherItem.data);
+//               // console.log(timeToCheck.data);
+//               // console.log(item.childNodes[4]);
+//               // console.log(iden.id);
+//               // main.slice(2).forEach((item) => {
+//               //   try {
+//               //     document.getElementById(item).innerText = "Closed";
+//               //     document.getElementById(item).disabled = true;
+//               //   } catch (err) {
+//               //     // console.log("couldn't add closed tag");
+//               //   }
+//               // });
+//             }
+//             if (
+//               otherItem.data == timeToCheck.data &&
+//               (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
+//                 document.getElementById(lesson.id).innerHTML == "Cancel Lesson")
+//             ) {
+//               console.log("cancel lesson thing");
+//               // console.log(item.nextSibling)
+//               lessonProperty.nextSibling.childNodes[4].disabled = false;
+//               lessonProperty.nextSibling.childNodes[4].innerText = "Register";
+//             }
+//           });
+//         } catch (err) {}
+//       });
+//     })
+//     .catch(function (error) {
+//       console.log("Error getting cached document:", error);
+//       db.collection("database2/schedule/lessons")
+//         .where("day", "==", day)
+//         .get()
+//         .then((snap) => {
+//           // ga('send', 'event', [READ], [DATA], [FIREBASE_READ]);
+//           snap.forEach((lesson) => {
+//             try {
+//               var timeToCheck = document.getElementById(lesson.id).parentElement
+//                 .childNodes[2];
+//               var lessonProperties = document.getElementById(lesson.id)
+//                 .parentElement.parentElement.childNodes;
+//               lessonProperties.forEach((lessonProperty) => {
+//                 var otherItem = lessonProperty.childNodes[2];
+//                 if (
+//                   otherItem.data == timeToCheck.data &&
+//                   (lessonProperty.childNodes[4].data == "Register" ||
+//                     document.getElementById(lesson.id).innerHTML == "Register")
+//                 ) {
+//                   document.getElementById(lesson.id).disabled = false;
+//                   document.getElementById(lesson.id).innerText = "Register";
+//                   lessonProperty.childNodes[4].disabled = false;
+//                   lessonProperty.childNodes[4].innerText = "Register";
+//                   // console.log("doubled");
+//                   // console.log(otherItem.data);
+//                   // console.log(timeToCheck.data);
+//                   // console.log(item.childNodes[4]);
+//                   // console.log(iden.id);
+//                   // main.slice(2).forEach((item) => {
+//                   //   try {
+//                   //     document.getElementById(item).innerText = "Closed";
+//                   //     document.getElementById(item).disabled = true;
+//                   //   } catch (err) {
+//                   //     // console.log("couldn't add closed tag");
+//                   //   }
+//                   // });
+//                 }
+//                 if (
+//                   otherItem.data == timeToCheck.data &&
+//                   (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
+//                     document.getElementById(lesson.id).innerHTML ==
+//                       "Cancel Lesson")
+//                 ) {
+//                   console.log("cancel lesson thing");
+//                   // console.log(item.nextSibling)
+//                   lessonProperty.nextSibling.childNodes[4].disabled = false;
+//                   lessonProperty.nextSibling.childNodes[4].innerText =
+//                     "Register";
+//                 }
+//               });
+//             } catch (err) {}
+//           });
+//         });
+//     });
+// }
 function addEvent(title, index, time, time2, id, array, max, regis, ins) {
   var exists = false;
   var available = true;
   var regNames = [];
   try {
-    if (array.indexOf("(" + name + ") " + email) != -1) {
+    if (array.indexOf("(" + user_name + ") " + email) != -1) {
       exists = true;
     }
   } catch (err) {
@@ -256,9 +269,9 @@ function addEvent(title, index, time, time2, id, array, max, regis, ins) {
   var originalString = array;
   var newThng = [];
   try {
-    originalString.forEach((name) => {
+    originalString.forEach((user_name) => {
       var regExp = /\(([^)]+)\)/;
-      var matches = regExp.exec(name);
+      var matches = regExp.exec(user_name);
       // console.log(matches[1]);
       newThng.push(matches[1]);
     });
@@ -404,7 +417,7 @@ function unRegister(iden) {
         ref.update({
           registered: firebase.firestore.FieldValue.increment(-1),
           signedUp: firebase.firestore.FieldValue.arrayRemove(
-            "(" + name + ") " + email
+            "(" + user_name + ") " + email
           ),
         });
       }
@@ -414,7 +427,7 @@ function unRegister(iden) {
       //   ref.update({
       //     registered: firebase.firestore.FieldValue.increment(-1),
       //     signedUp: firebase.firestore.FieldValue.arrayRemove(
-      //       "(" + name + ") " + email
+      //       "(" + user_name + ") " + email
       //     ),
       //   });
       // }
@@ -497,9 +510,9 @@ function register(iden) {
         var originalString = doc.data().signedUp;
         var newThng = [];
         try {
-          originalString.forEach((name) => {
+          originalString.forEach((user_name) => {
             var regExp = /\(([^)]+)\)/;
-            var matches = regExp.exec(name);
+            var matches = regExp.exec(user_name);
             // console.log(matches[1]);
             newThng.push(matches[1]);
           });
@@ -556,11 +569,11 @@ function write() {
       rawDay.substr(0, 2);
     var cardDate = Date.parse(dat + "T" + hours + ":" + minutes + ":00");
     var TorF = Date.today().compareTo(cardDate);
-    console.log(cardDate);
-    console.log(Date.today());
-    console.log(TorF);
-    console.log(cardDate.getTime() / 1000);
-    console.log(tomorrow.getTime() / 1000);
+    // console.log(cardDate);
+    // console.log(Date.today());
+    // console.log(TorF);
+    // console.log(cardDate.getTime() / 1000);
+    // console.log(tomorrow.getTime() / 1000);
     var tom = tomorrow.getTime() / 1000;
     var cardD = cardDate.getTime() / 1000;
     if (cardD < tom) {
@@ -571,7 +584,7 @@ function write() {
       ref.update({
         registered: firebase.firestore.FieldValue.increment(1),
         signedUp: firebase.firestore.FieldValue.arrayUnion(
-          "(" + name + ") " + email
+          "(" + user_name + ") " + email
         ),
       });
     }
@@ -581,7 +594,7 @@ function write() {
     //   ref.update({
     //     registered: firebase.firestore.FieldValue.increment(-1),
     //     signedUp: firebase.firestore.FieldValue.arrayRemove(
-    //       "(" + name + ") " + email
+    //       "(" + user_name + ") " + email
     //     ),
     //   });
     // }
@@ -593,7 +606,7 @@ function write() {
   // ref.update({
   //   registered: firebase.firestore.FieldValue.increment(1),
   //   signedUp: firebase.firestore.FieldValue.arrayUnion(
-  //     "(" + name + ") " + email
+  //     "(" + user_name + ") " + email
   //   ),
   // });
   document.querySelector(".modal").classList.toggle("show-modal");
@@ -601,105 +614,48 @@ function write() {
   document.getElementById("modalTime").innerHTML = "Loading...";
   document.getElementById("modalthree").innerHTML = "Loading...";
 }
-function overflow(dayToCheck) {
-  // var insPerDay = 2;
-  // db.collection("database2")
-  //   .doc("schedule")
-  //   .onSnapshot( (doc) => {
-  //     insPerDay = doc.data()[dayToCheck];
-  //     console.log(insPerDay);
-  //   });
-  db.collection("database2/schedule/lessons")
-    .where("day", "==", dayToCheck)
-    .orderBy("start", "asc")
-    .orderBy("ins", "desc")
-    .onSnapshot(function (lessons) {
-      var main = [];
-      var maxAr = [];
-      var registeredAr = [];
-      var signedUpAr = [];
-      var start = [];
-      var instructors = [];
-      lessons.forEach(function (lessonDoc) {
-        if (lessonDoc.data().max != lessonDoc.data().registered) {
-          main.push(lessonDoc.id);
-          maxAr.push(lessonDoc.data().max);
-          registeredAr.push(lessonDoc.data().registered);
-          signedUpAr.push(lessonDoc.data().signedUp);
-          start.push(lessonDoc.data().start);
-          instructors.push(lessonDoc.data().ins);
-        }
-      });
-      var exists = false;
+function overflow(allEvents, dayToEvaluate, masterUniqueInstructors) {
+  allLessons = Array.from(allEvents);
+  var masterToClose = [];
+  // Filter down to only today
+  var eventsOnDay = allLessons.filter((doc) => doc.data().day == dayToEvaluate);
+  // Extract properties from events into a giant array per property
+  masterUniqueInstructors.forEach(function (intructor) {
+    var insEvents = eventsOnDay.filter((doc) => doc.data().ins == intructor);
+    var toClose = [];
+    insEvents.forEach(function (lessonDoc) {
+      var alreadyRegistered = false;
       var available = true;
-
       try {
-        if (signedUpAr[0].indexOf("(" + name + ") " + email) != -1) {
-          exists = true;
+        if (
+          lessonDoc
+            .data()
+            .signedUp.toString()
+            .includes("(" + user_name + ") " + email)
+        ) {
+          alreadyRegistered = true;
         }
-      } catch (err) {
-        // console.log(err);
-        exists = false;
-      }
-      if (maxAr[0] == registeredAr[0]) {
-        available = false;
-      } else {
-        available = true;
-      }
-      try {
-        if (exists && available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Cancel Lesson";
-        } else if (!exists && available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Register";
-        } else if (!exists && !available) {
-          document.getElementById(main[0]).disabled = true;
-          document.getElementById(main[0]).innerText = "Full";
-        } else if (exists && !available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Cancel Lesson";
+        if (lessonDoc.data().max == lessonDoc.data().registered) {
+          available = false;
         }
-      } catch (err) {
-        // console.log("last item not fully registered event");
+      } catch (error) {}
+      if (!alreadyRegistered && available) {
+        // Button says "Register";
+        toClose.push(lessonDoc.id);
       }
-
-      var uniqueInstructors = [...new Set(instructors)];
-      var totalUniqueInstructors = uniqueInstructors.length;
-      var lessonsToStayOpen = [];
-
-      uniqueInstructors.forEach((instructor) => {
-        var indexOfIDToGet = instructors.indexOf(instructor);
-        lessonsToStayOpen.push(main[indexOfIDToGet]);
-      });
-
-      main.forEach((workingID) => {
-        if (!lessonsToStayOpen.includes(workingID)) {
-          try {
-            document.getElementById(workingID).innerText = "Closed";
-            document.getElementById(workingID).disabled = true;
-          } catch (err) {
-            // console.log("couldn't add closed tag");
-          }
-        }
-      });
-      // checkDuplicateTime(dayToCheck);
-      // Potential problem: can be start.length + 1
-      // for (var i = 0; i < start.length; i++) {
-      //   var getCurrent = start[i];
-      //   var removedArray = start;
-      //   var index = removedArray.indexOf(5);
-      //   if (index > -1) {
-      //     removedArray.splice(index, 1);
-      //   }
-      //   if (removedArray.includes(getCurrent)) {
-      //     var indexOfItem =
-      //     document.getElementById(main[0]).disabled = false;
-      //     document.getElementById(main[0]).innerText = "Register";
-      //   }
-      // }
-      // console.log("Current cities in CA: ", cities.join(", "));
     });
+    masterToClose.push(toClose.slice(1));
+  });
+
+  var closing = [...new Set(masterToClose.flat(Infinity))];
+
+  try {
+    closing.forEach((buttonID) => {
+      document.getElementById(buttonID).innerText = "Closed";
+      document.getElementById(buttonID).disabled = true;
+    });
+  } catch (error) {}
+
 }
 document.getElementById("accept").addEventListener("click", write);
 document.getElementById("plus").addEventListener("click", () => {
@@ -764,7 +720,7 @@ var db;
 var email;
 var identity;
 var activePane = 0;
-var name;
+var user_name;
 var fullArray = [];
 var modal = document.querySelector(".modal");
 var infoModal = document.querySelector(".modal2");
@@ -793,8 +749,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     loginFrame.style.display = "none";
     navBar.style.display = "flex";
     email = user.email;
-    name = user.displayName;
-    // console.log(name);
+    user_name = user.displayName;
+    // console.log(user_name);
 
     // var trigger = document.querySelector(".trigger");
     var closeButton = document.querySelector(".close-button");
@@ -867,7 +823,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         {
           provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          // Whether the display name should be displayed in the Sign Up page.
+          // Whether the display user_name should be displayed in the Sign Up page.
           requireDisplayName: true,
         },
         {
