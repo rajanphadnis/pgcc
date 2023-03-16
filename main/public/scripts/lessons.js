@@ -1,6 +1,21 @@
 var getOptions = {
   source: "cache",
 };
+var errorMessage = "Sorry, It's On Our End!";
+var loginFrame = document.getElementById("sign-inDiv");
+var mainContent = document.getElementById("MainContent");
+var navBar = document.getElementById("navigation");
+var tabbedColor = "#616161";
+var themeColor = "#096F38";
+var db;
+var email;
+var identity;
+var activePane = 0;
+var user_name;
+var fullArray = [];
+var modal = document.querySelector(".modal");
+var infoModal = document.querySelector(".modal2");
+var maxWeeksToShow = 5;
 function twentyFourHourCheck() {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -22,7 +37,7 @@ function getMonday(d) {
 }
 function clearCalendar() {
   var items = "";
-  for (var chunk = 0; chunk < 11; chunk++) {
+  for (var chunk = 0; chunk < maxWeeksToShow; chunk++) {
     var other = "";
     for (var calendarDay = 0; calendarDay < 7; calendarDay++) {
       var num = calendarDay + chunk * 7;
@@ -61,7 +76,7 @@ function initCalendar() {
   var items = "";
   var daysWritten = [];
   var masterInstructors = [];
-  for (var chunk = 0; chunk < 11; chunk++) {
+  for (var chunk = 0; chunk < maxWeeksToShow; chunk++) {
     var other = "";
     for (var calendarDay = 0; calendarDay < 7; calendarDay++) {
       var num = calendarDay + chunk * 7;
@@ -130,112 +145,6 @@ function initCalendar() {
       });
     });
 }
-// function checkDuplicateTime(day) {
-//   db.collection("database2/schedule/lessons")
-//     .where("day", "==", day)
-//     .get(getOptions)
-//     .then((snap) => {
-//       snap.forEach((lesson) => {
-//         try {
-//           var timeToCheck = document.getElementById(lesson.id).parentElement
-//             .childNodes[2];
-//           var lessonProperties = document.getElementById(lesson.id)
-//             .parentElement.parentElement.childNodes;
-//           lessonProperties.forEach((lessonProperty) => {
-//             var otherItem = lessonProperty.childNodes[2];
-//             if (
-//               otherItem.data == timeToCheck.data &&
-//               (lessonProperty.childNodes[4].data == "Register" ||
-//                 document.getElementById(lesson.id).innerHTML == "Register")
-//             ) {
-//               document.getElementById(lesson.id).disabled = false;
-//               document.getElementById(lesson.id).innerText = "Register";
-//               lessonProperty.childNodes[4].disabled = false;
-//               lessonProperty.childNodes[4].innerText = "Register";
-//               // console.log("doubled");
-//               // console.log(otherItem.data);
-//               // console.log(timeToCheck.data);
-//               // console.log(item.childNodes[4]);
-//               // console.log(iden.id);
-//               // main.slice(2).forEach((item) => {
-//               //   try {
-//               //     document.getElementById(item).innerText = "Closed";
-//               //     document.getElementById(item).disabled = true;
-//               //   } catch (err) {
-//               //     // console.log("couldn't add closed tag");
-//               //   }
-//               // });
-//             }
-//             if (
-//               otherItem.data == timeToCheck.data &&
-//               (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
-//                 document.getElementById(lesson.id).innerHTML == "Cancel Lesson")
-//             ) {
-//               console.log("cancel lesson thing");
-//               // console.log(item.nextSibling)
-//               lessonProperty.nextSibling.childNodes[4].disabled = false;
-//               lessonProperty.nextSibling.childNodes[4].innerText = "Register";
-//             }
-//           });
-//         } catch (err) {}
-//       });
-//     })
-//     .catch(function (error) {
-//       console.log("Error getting cached document:", error);
-//       db.collection("database2/schedule/lessons")
-//         .where("day", "==", day)
-//         .get()
-//         .then((snap) => {
-//           // ga('send', 'event', [READ], [DATA], [FIREBASE_READ]);
-//           snap.forEach((lesson) => {
-//             try {
-//               var timeToCheck = document.getElementById(lesson.id).parentElement
-//                 .childNodes[2];
-//               var lessonProperties = document.getElementById(lesson.id)
-//                 .parentElement.parentElement.childNodes;
-//               lessonProperties.forEach((lessonProperty) => {
-//                 var otherItem = lessonProperty.childNodes[2];
-//                 if (
-//                   otherItem.data == timeToCheck.data &&
-//                   (lessonProperty.childNodes[4].data == "Register" ||
-//                     document.getElementById(lesson.id).innerHTML == "Register")
-//                 ) {
-//                   document.getElementById(lesson.id).disabled = false;
-//                   document.getElementById(lesson.id).innerText = "Register";
-//                   lessonProperty.childNodes[4].disabled = false;
-//                   lessonProperty.childNodes[4].innerText = "Register";
-//                   // console.log("doubled");
-//                   // console.log(otherItem.data);
-//                   // console.log(timeToCheck.data);
-//                   // console.log(item.childNodes[4]);
-//                   // console.log(iden.id);
-//                   // main.slice(2).forEach((item) => {
-//                   //   try {
-//                   //     document.getElementById(item).innerText = "Closed";
-//                   //     document.getElementById(item).disabled = true;
-//                   //   } catch (err) {
-//                   //     // console.log("couldn't add closed tag");
-//                   //   }
-//                   // });
-//                 }
-//                 if (
-//                   otherItem.data == timeToCheck.data &&
-//                   (lessonProperty.childNodes[4].data == "Cancel Lesson" ||
-//                     document.getElementById(lesson.id).innerHTML ==
-//                       "Cancel Lesson")
-//                 ) {
-//                   console.log("cancel lesson thing");
-//                   // console.log(item.nextSibling)
-//                   lessonProperty.nextSibling.childNodes[4].disabled = false;
-//                   lessonProperty.nextSibling.childNodes[4].innerText =
-//                     "Register";
-//                 }
-//               });
-//             } catch (err) {}
-//           });
-//         });
-//     });
-// }
 function addEvent(title, index, time, time2, id, array, max, regis, ins) {
   var exists = false;
   var available = true;
@@ -351,23 +260,6 @@ function addEvent(title, index, time, time2, id, array, max, regis, ins) {
   var insDiv = document.createElement("div");
   insDiv.id = ins.replace(/\s+/g, "").toLowerCase() + index;
   insDiv.className = "insDiv";
-  // "<div id='" + ins.replace(/\s+/g, '').toLowerCase() + "'></div>";
-
-  // try {
-  //   document
-  //     .getElementById(ins.replace(/\s+/g, "").toLowerCase() + index)
-  //     .appendChild(div);
-  // } catch (err) {
-  //   try {
-  //     document.getElementById("day" + index).appendChild(insDiv);
-  //     document
-  //       .getElementById(ins.replace(/\s+/g, "").toLowerCase() + index)
-  //       .appendChild(div);
-  //   } catch (err2) {
-  //     console.log("index out of range");
-  //   }
-  //   // document.getElementById("day" + index).appendChild(insDiv);
-  // }
   try {
     document.getElementById("day" + index).appendChild(div);
     // document
@@ -474,21 +366,21 @@ function occurrences(string, subString, allowOverlapping) {
   }
   return n;
 }
-function checkDuplicate(iden) {
-  var time = document.getElementById(iden).parentNode.innerHTML;
-  var start_pos = time.indexOf("<br>") + 4;
-  var end_pos = time.indexOf("<br>", start_pos);
-  var test = time.substring(start_pos, end_pos);
-  var wholeParent =
-    document.getElementById(iden).parentNode.parentNode.innerHTML;
-  var numMatch = occurrences(wholeParent, test, false);
-  console.log(numMatch);
-  if (numMatch > 1) {
-    alert(
-      "Be careful! There are multiple events with this same time. You can only register for one lesson at a time!"
-    );
-  }
-}
+// function checkDuplicate(iden) {
+//   var time = document.getElementById(iden).parentNode.innerHTML;
+//   var start_pos = time.indexOf("<br>") + 4;
+//   var end_pos = time.indexOf("<br>", start_pos);
+//   var test = time.substring(start_pos, end_pos);
+//   var wholeParent =
+//     document.getElementById(iden).parentNode.parentNode.innerHTML;
+//   var numMatch = occurrences(wholeParent, test, false);
+//   console.log(numMatch);
+//   if (numMatch > 1) {
+//     alert(
+//       "Be careful! There are multiple events with this same time. You can only register for one lesson at a time!"
+//     );
+//   }
+// }
 function register(iden) {
   // checkDuplicate(iden);
   document.querySelector(".modal").classList.toggle("show-modal");
@@ -509,6 +401,12 @@ function register(iden) {
         var formattedTime2 = hours2 + ":" + minutes2.substr(-2);
         var originalString = doc.data().signedUp;
         var newThng = [];
+        var day =
+          doc.data().day.substr(2, 2) +
+          "/" +
+          doc.data().day.substr(0, 2) +
+          "/" +
+          doc.data().day.substr(4, 4);
         try {
           originalString.forEach((user_name) => {
             var regExp = /\(([^)]+)\)/;
@@ -521,14 +419,20 @@ function register(iden) {
         }
 
         document.getElementById("modalTitle").innerHTML =
-          doc.data().ins + " - " + doc.data().title;
+          "<h1>" + doc.data().ins + "</h1><h3>@ " + doc.data().title + "</h3>";
         document.getElementById("modalTime").innerHTML =
-          parseTime(hours, minutes) + " - " + parseTime(hours2, minutes2);
+          day +
+          "</br></br>Lesson Time: " +
+          parseTime(hours, minutes) +
+          " - " +
+          parseTime(hours2, minutes2);
         document.getElementById("modalthree").innerHTML =
-          "<p>" +
+          "<p>Description: " +
           doc.data().three +
-          "</p>Participants: <p>" +
-          newThng.join(", ") +
+          "</p><p>Golfer(s): " +
+          (newThng.join(", ") == ""
+            ? "None yet - but you could be the first!"
+            : newThng.join(", ")) +
           "</p>";
         // console.log("Document data:", doc.data());
         identity = iden;
@@ -610,7 +514,7 @@ function write() {
   //   ),
   // });
   document.querySelector(".modal").classList.toggle("show-modal");
-  document.getElementById("modalTitle").innerHTML = "Loading...";
+  document.getElementById("modalTitle").innerHTML = "<h1>Loading...</h1>";
   document.getElementById("modalTime").innerHTML = "Loading...";
   document.getElementById("modalthree").innerHTML = "Loading...";
 }
@@ -655,22 +559,26 @@ function overflow(allEvents, dayToEvaluate, masterUniqueInstructors) {
       document.getElementById(buttonID).disabled = true;
     });
   } catch (error) {}
-
 }
-document.getElementById("accept").addEventListener("click", write);
-document.getElementById("plus").addEventListener("click", () => {
-  console.log("plus");
-  document.querySelector(".modal2").classList.toggle("show-modal2");
-  // document.getElementById("newSave").style.display = "inline";
-  // document.getElementById("accept").style.display = "none";
-});
-document.getElementById("deny").addEventListener("click", () => {
-  document.querySelector(".modal").classList.toggle("show-modal");
-  document.getElementById("modalTitle").innerHTML = "Loading...";
-  document.getElementById("modalTime").innerHTML = "Loading...";
-  document.getElementById("modalthree").innerHTML = "Loading...";
-});
-document.getElementById("previous").addEventListener("click", () => {
+function nextWeek() {
+  if (activePane != maxWeeksToShow - 1) {
+    document.getElementById("previous").disabled = false;
+    document.getElementById("week" + activePane).style.display = "none";
+    activePane = activePane + 1;
+    document.getElementById("week" + activePane).style.display = "flex";
+    if (activePane == maxWeeksToShow - 1) {
+      console.log("done");
+      document.getElementById("next").disabled = true;
+    } else {
+      document.getElementById(
+        "week" + (activePane + 1).toString()
+      ).style.display = "none";
+    }
+  } else {
+    console.log("plus not possible");
+  }
+}
+function previousWeek() {
   if (activePane != 0) {
     document.getElementById("next").disabled = false;
     document.getElementById("week" + activePane).style.display = "none";
@@ -685,45 +593,30 @@ document.getElementById("previous").addEventListener("click", () => {
   } else {
     console.log("back not possible");
   }
+}
+document.getElementById("accept").addEventListener("click", write);
+document.onkeydown = checkKey;
+document.getElementById("infoButton").addEventListener("click", () => {
+  console.log("plus");
+  document.querySelector(".modal2").classList.toggle("show-modal2");
+  // document.getElementById("newSave").style.display = "inline";
+  // document.getElementById("accept").style.display = "none";
+});
+document.getElementById("deny").addEventListener("click", () => {
+  document.querySelector(".modal").classList.toggle("show-modal");
+  document.getElementById("modalTitle").innerHTML = "<h1>Loading...</h1>";
+  document.getElementById("modalTime").innerHTML = "Loading...";
+  document.getElementById("modalthree").innerHTML = "Loading...";
+});
+document.getElementById("previous").addEventListener("click", () => {
+  previousWeek();
 });
 document.getElementById("next").addEventListener("click", () => {
-  if (activePane != 10) {
-    document.getElementById("previous").disabled = false;
-    document.getElementById("week" + activePane).style.display = "none";
-    activePane = activePane + 1;
-    document.getElementById("week" + activePane).style.display = "flex";
-    if (activePane == 10) {
-      console.log("done");
-      document.getElementById("next").disabled = true;
-    } else {
-      document.getElementById(
-        "week" + (activePane + 1).toString()
-      ).style.display = "none";
-    }
-  } else {
-    console.log("plus not possible");
-  }
+  nextWeek();
 });
-// document.getElementById("more").addEventListener("click", () => {
-//   document.querySelector(".modal2").classList.toggle("show-modal2");
-// });
 document.getElementById("close-button2").addEventListener("click", () => {
   document.querySelector(".modal2").classList.toggle("show-modal2");
 });
-var errorMessage = "Sorry, It's On Our End!";
-var loginFrame = document.getElementById("sign-inDiv");
-var mainContent = document.getElementById("MainContent");
-var navBar = document.getElementById("navigation");
-var tabbedColor = "#616161";
-var themeColor = "#096F38";
-var db;
-var email;
-var identity;
-var activePane = 0;
-var user_name;
-var fullArray = [];
-var modal = document.querySelector(".modal");
-var infoModal = document.querySelector(".modal2");
 function toggleInfoModal() {
   infoModal.classList.toggle("show-modal2");
 }
@@ -738,10 +631,16 @@ function windowOnClick(event) {
     toggleInfoModal();
   }
 }
-// firebase
-//   .firestore()
-//   .enablePersistence()
-//   .then(function () {
+function checkKey(e) {
+  e = e || window.event;
+  if (e.keyCode == "37") {
+    // left arrow
+    previousWeek();
+  } else if (e.keyCode == "39") {
+    // right arrow
+    nextWeek();
+  }
+}
 db = firebase.firestore();
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
@@ -750,12 +649,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     navBar.style.display = "flex";
     email = user.email;
     user_name = user.displayName;
-    // console.log(user_name);
-
-    // var trigger = document.querySelector(".trigger");
-    var closeButton = document.querySelector(".close-button");
-
-    // trigger.addEventListener("click", toggleModal);
+    var closeButton = document.querySelector("#close-button");
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
     if (
@@ -851,23 +745,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     // });
   }
 });
-// })
-// .catch(function (err) {
-//   if (err.code == "failed-precondition") {
-//     // Multiple tabs open, persistence can only be enabled
-//     // in one tab at a a time.
-//     // ...
-//     alert(
-//       "You have multiple instances of this app open at the same time. In order for this app to work offline, you must close all other instances of this app."
-//     );
-//   } else if (err.code == "unimplemented") {
-//     alert(
-//       "The browser you are using does not support offline data for this app."
-//     );
-//   } else {
-//     alert("Error: " + err);
-//   }
-// });
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("../service-worker.js").then(function () {
     console.log("Service Worker Registered");

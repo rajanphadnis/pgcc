@@ -92,16 +92,22 @@ body {
 }
 #infoButton {
   margin: 0px;
-  padding: 0px;
+  padding: 3px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  align-content: center;
   cursor: pointer;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: transparent;
 }
 #infoButton p {
   margin: 0px;
   padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 #titleBar2 {
   display: flex;
@@ -360,6 +366,9 @@ body {
 #deny:hover {
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);
 }
+#modalTime {
+  margin-top: 5px;
+}
 #modalTime2 {
   display: flex;
   flex-direction: column;
@@ -434,4 +443,12 @@ body {
 #days .dayDiv:nth-child(7n + 4) > .day {
   justify-content: start;
   padding-top: 5px;
+}
+
+#modalTitle h1 {
+  margin-bottom: 0px;
+}
+#modalTitle h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
