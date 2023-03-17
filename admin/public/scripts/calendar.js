@@ -193,11 +193,11 @@ function register(iden) {
       // } catch (err) {
       //   signedUp = "none";
       // }
-      document.getElementById("modalTitle").innerHTML =
-        "Course: <input id='titleInp' type='text' value='" +
-        doc.data().title +
-        "'/>";
+      document.getElementById("modalTitle").innerHTML = "Edit Tee Time";
       document.getElementById("modalTime").innerHTML =
+      "Course: <input id='titleInp' type='text' value='" +
+      doc.data().title +
+      "'/>" + 
         "<p>Day:</p>" +
         listDays +
         "<p>Start and End Time:</p><input id='startInp' type='time'><input id='endInp' type='time'></br><p>Max Participants:</p>" +
@@ -330,9 +330,9 @@ document.getElementById("plus").addEventListener("click", () => {
   var maxNum = "<input id='maxNum' type='number'/>";
   var descInp = "<input id='descInp' type='text' value='TEE TIME'/>";
   var listDays = '<input id="days-select" type="date">';
-  document.getElementById("modalTitle").innerHTML =
-    "Course: <input id='titleInp' type='text'/>";
+  document.getElementById("modalTitle").innerHTML = "Add Tee Time";
   document.getElementById("modalTime").innerHTML =
+  "<p>Course:</p><input id='titleInp' type='text'/>" +
     "<p>Day:</p>" +
     listDays +
     "<p>Start and End Time:</p><input id='startInp' type='time'><input id='endInp' type='time'></><p>Max Participants:</p>" +
