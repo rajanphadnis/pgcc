@@ -10,6 +10,7 @@ var themeColor = "#096F38";
 var db;
 var email;
 var identity;
+var cardDateCurrent;
 var activePane = 0;
 var user_name;
 var fullArray = [];
@@ -385,6 +386,9 @@ function register(iden) {
   // checkDuplicate(iden);
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("accept").disabled = true;
+  var dayOne = new Date();
+  var tomorrow = new Date(dayOne);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   var docRef = db.collection("database2/schedule/lessons").doc(iden);
   docRef
     .get()
@@ -394,11 +398,11 @@ function register(iden) {
         var date = new Date(doc.data().start * 1000);
         var hours = date.getHours();
         var minutes = date.getMinutes().toString().padStart(2, "0");
-        var formattedTime = hours + ":" + minutes.substr(-2);
+        // var formattedTime = hours + ":" + minutes.substr(-2);
         var date2 = new Date(doc.data().end * 1000);
         var hours2 = date2.getHours();
         var minutes2 = date2.getMinutes().toString().padStart(2, "0");
-        var formattedTime2 = hours2 + ":" + minutes2.substr(-2);
+        // var formattedTime2 = hours2 + ":" + minutes2.substr(-2);
         var originalString = doc.data().signedUp;
         var newThng = [];
         var day =
@@ -407,6 +411,12 @@ function register(iden) {
           doc.data().day.substr(0, 2) +
           "/" +
           doc.data().day.substr(4, 4);
+        var dat =
+          doc.data().day.substr(4, 4) +
+          "-" +
+          doc.data().day.substr(2, 2) +
+          "-" +
+          doc.data().day.substr(0, 2);
         try {
           originalString.forEach((user_name) => {
             var regExp = /\(([^)]+)\)/;
@@ -435,8 +445,14 @@ function register(iden) {
             : newThng.join(", ")) +
           "</p>";
         // console.log("Document data:", doc.data());
+        var cardDate = Date.parse(dat + "T" + hours + ":" + minutes + ":00");
+        var tom = tomorrow.getTime() / 1000;
+        var cardD = cardDate.getTime() / 1000;
         identity = iden;
+        cardDateCurrent = cardD;
         document.getElementById("accept").disabled = false;
+        document.getElementById("accept").style.display =
+          cardD < tom ? "none" : "inline-block";
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
@@ -447,72 +463,24 @@ function register(iden) {
     });
 }
 function write() {
-  // if (confirm("Do you want to unregister for this event?")) {
   var dayOne = new Date();
   var tomorrow = new Date(dayOne);
   tomorrow.setDate(tomorrow.getDate() + 1);
   var ref = db.collection("database2/schedule/lessons").doc(identity);
-  ref.get().then((doc) => {
-    // ga('send', 'event', [READ], [DATA], [FIREBASE_READ]);
-    var date = new Date(doc.data().start * 1000);
-    var hours = date.getHours();
-    var minutes = date.getMinutes().toString().padStart(2, "0");
-    var date2 = new Date(doc.data().end * 1000);
-    var hours2 = date2.getHours();
-    var minutes2 = date2.getMinutes().toString().padStart(2, "0");
-    var rawDay = document
-      .getElementById(identity)
-      .parentNode.parentNode.id.toString()
-      .substr(3, 8);
-
-    var dat =
-      rawDay.substr(4, 4) +
-      "-" +
-      rawDay.substr(2, 2) +
-      "-" +
-      rawDay.substr(0, 2);
-    var cardDate = Date.parse(dat + "T" + hours + ":" + minutes + ":00");
-    var TorF = Date.today().compareTo(cardDate);
-    // console.log(cardDate);
-    // console.log(Date.today());
-    // console.log(TorF);
-    // console.log(cardDate.getTime() / 1000);
-    // console.log(tomorrow.getTime() / 1000);
-    var tom = tomorrow.getTime() / 1000;
-    var cardD = cardDate.getTime() / 1000;
-    if (cardD < tom) {
-      alert(
-        "Sorry, you can't register for a lesson less than 24 hours before the event."
-      );
-    } else {
-      ref.update({
-        registered: firebase.firestore.FieldValue.increment(1),
-        signedUp: firebase.firestore.FieldValue.arrayUnion(
-          "(" + user_name + ") " + email
-        ),
-      });
-    }
-    // if (TorF < 0) {
-    //   alert("Sorry, you can't cancel a lesson 24 hours before the event.");
-    // } else {
-    //   ref.update({
-    //     registered: firebase.firestore.FieldValue.increment(-1),
-    //     signedUp: firebase.firestore.FieldValue.arrayRemove(
-    //       "(" + user_name + ") " + email
-    //     ),
-    //   });
-    // }
-  });
-  // } else {
-  //   console.log("cancelled");
-  // }
-  // var ref = db.collection("database2/schedule/lessons").doc(identity);
-  // ref.update({
-  //   registered: firebase.firestore.FieldValue.increment(1),
-  //   signedUp: firebase.firestore.FieldValue.arrayUnion(
-  //     "(" + user_name + ") " + email
-  //   ),
-  // });
+  var tom = tomorrow.getTime() / 1000;
+  var cardD = cardDateCurrent;
+  if (cardD < tom) {
+    alert(
+      "Sorry, you can't register for a lesson less than 24 hours before the event."
+    );
+  } else {
+    ref.update({
+      registered: firebase.firestore.FieldValue.increment(1),
+      signedUp: firebase.firestore.FieldValue.arrayUnion(
+        "(" + user_name + ") " + email
+      ),
+    });
+  }
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("modalTitle").innerHTML = "<h1>Loading...</h1>";
   document.getElementById("modalTime").innerHTML = "Loading...";
@@ -745,8 +713,27 @@ firebase.auth().onAuthStateChanged(function (user) {
     // });
   }
 });
+function toggleMoreInfo() {
+  if (document.getElementById("moreInfoDiv").style.display == "none") {
+    document.getElementById("moreInfo").innerHTML = "Less &and;";
+    document.getElementById("moreInfoDiv").style.display = "inline-block";
+    document.getElementById("vNum").innerHTML =
+      dataCacheName + " cache: " + cacheName;
+  } else {
+    document.getElementById("moreInfo").innerHTML = "More &or;";
+    document.getElementById("moreInfoDiv").style.display = "none";
+  }
+}
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("../service-worker.js").then(function () {
+  navigator.serviceWorker.register("../service-worker.js").then(function (reg) {
     console.log("Service Worker Registered");
+    document.getElementById("updateCheck").addEventListener("click", () => {
+      console.log("checking for updates");
+      reg.update().then(() => {
+        console.log("Service Worker Updated");
+        alert("If there were any available updates, they've been downloaded.");
+        window.location = "/lessons/";
+      });
+    });
   });
 }

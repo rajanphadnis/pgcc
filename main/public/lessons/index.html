@@ -50,7 +50,9 @@
   <div class="modal">
     <div class="modal-content">
       <span id="close-button">&times;</span>
-      <span id="modalTitle"><h1>Loading...</h1></span>
+      <span id="modalTitle">
+        <h1>Loading...</h1>
+      </span>
       <p id="modalTime">Loading...</p>
       <p id="modalthree">Loading...</p>
       <button id="deny">Cancel</button><button id="accept">Register</button>
@@ -63,15 +65,18 @@
       <div id="modalTime2">
         <p>The tee and lesson sheets will be posted on Friday for the following week. Each student is responsible for
           their own name on the tee and lesson sheets. You should plan your week as to when you want to practice, take
-          lessons, or play.</br></br>If you are not in school on that day, you will not be allowed to play, take lessons, or
+          lessons, or play.</br></br>If you are not in school on that day, you will not be allowed to play, take
+          lessons, or
           use the practice range. If you play golf, take lessons, or use the practice range on a day that you are
           not in school, your privileges will be suspended for one week. 2nd offense - 2- week suspension, etc. Any
           cancellation of your tee time or lesson must take place no later than 24 hours prior to your tee time or
           lesson. No shows - any student who does not show up for their tee time will be responsible for paying their
-          green fee ($25.00) before their playing privileges are restored. </br></br>Tee sheets are faxed 24 hours in advance. No
+          green fee ($25.00) before their playing privileges are restored. </br></br>Tee sheets are faxed 24 hours in
+          advance. No
           changes to the tee sheet will be made after it has been faxed. Report to the pro shop and show your current
           student I.D. when you check in for your tee time or lesson.</br></p><a target="_blank"
-          href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf"><span class="material-symbols-outlined">
+          href="https://golfcollege.edu/Professional-Golfers-Career-College-STUDENT-HANDBOOK-Temecula.pdf"><span
+            class="material-symbols-outlined">
             picture_as_pdf
           </span>Student
           Handbook</a></br><a target="_blank" href="/InstructionGuidelines.pdf"><span class="material-symbols-outlined">
@@ -79,11 +84,25 @@
           </span>COVID-19 Instruction
           Guidelines</a></br><a target="_blank" href="/TournamentSheet.pdf"><span class="material-symbols-outlined">
             picture_as_pdf
-          </span>COVID-19 Tournament Changes</a></br><a
-          target="_blank"
-          href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/"><span class="material-symbols-outlined">
+          </span>COVID-19 Tournament Changes</a></br><a target="_blank"
+          href="https://golfcollege.edu/admissions/campus-locations/temecula-california-campus/"><span
+            class="material-symbols-outlined">
             link
-            </span>Temecula Campus</a>
+          </span>Temecula Campus</a>
+        </br>
+        <button id="moreInfo" onclick="toggleMoreInfo()">More &or;</button>
+        <div id="moreInfoDiv" style="display: none;">
+          <p style="font-size: small;margin-bottom: 0px;">
+            Use the left and right arrow keys to navigate weeks.</br>
+            Events are "locked out" 24 hours before they start.</br>
+            Lessons can only be reserved if that instructor's previous lessons have already been reserved for that
+            day.</br></br>
+            Built by <a href="https://github.com/rajanphadnis?tab=repositories">Rajan Phadnis</a> for PGCC in June,
+            2020</br>
+            <span id="vNum"></span>
+          </p>
+          <button id="updateCheck">Check For Updates</button>
+        </div>
       </div>
     </div>
   </div>
@@ -107,7 +126,9 @@
       <!-- <p id="emptyDiv"> </p> -->
       <button id="infoButton"><span class="material-icons">
           info
-        </span><p>Info</p></button>
+        </span>
+        <p>Info</p>
+      </button>
       <div class="hCenter">
         <button id="previous" disabled><span class="material-symbols-outlined">
             arrow_back_ios
@@ -147,6 +168,7 @@
     </div>
   </div>
   </div>
+  <script src="../service-worker.js"></script>
   <script src="../scripts/lessons.js"></script>
   <!-- Have a standard template for all lessons, then get address bar data, and get firebase data based off the address bar data. Fill in dynamically where needed. -->
 </body>
