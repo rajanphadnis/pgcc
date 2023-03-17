@@ -10,6 +10,7 @@ var themeColor = "#096F38";
 var db;
 var email;
 var identity;
+var cardDateCurrent;
 var activePane = 0;
 var name;
 var infoModal = document.querySelector(".modal2");
@@ -248,7 +249,7 @@ function addEvent(title, index, time, time2, id, array, max, regis) {
   try {
     document.getElementById("day" + index).appendChild(div);
   } catch (err) {
-    console.log("index out of range");
+    // console.log("index out of range");
   }
 }
 function unRegister(iden) {
@@ -325,14 +326,16 @@ function register(iden) {
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("accept").disabled = true;
   var docRef = db.collection("database2/schedule/TeeTimes").doc(iden);
+  var dayOne = new Date();
+  var tomorrow = new Date(dayOne);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   docRef
     .get()
     .then(function (doc) {
-      // ga('send', 'event', 'data', 'get', email);
       if (doc.exists) {
         var date = new Date(doc.data().start * 1000);
-        var hours = date.getHours();
-        var minutes = "0" + date.getMinutes();
+        var hours = date.getHours().toString().padStart(2, "0");
+        var minutes = date.getMinutes().toString().padStart(2, "0");
         var formattedTime = hours + ":" + minutes.substr(-2);
         var date2 = new Date(doc.data().end * 1000);
         var hours2 = date2.getHours();
@@ -346,6 +349,14 @@ function register(iden) {
           doc.data().day.substr(0, 2) +
           "/" +
           doc.data().day.substr(4, 4);
+        var dat =
+          doc.data().day.substr(4, 4) +
+          "-" +
+          doc.data().day.substr(2, 2) +
+          "-" +
+          doc.data().day.substr(0, 2);
+        var cardDate = Date.parse(dat + "T" + hours + ":" + minutes + ":00");
+        console.log(cardDate);
         try {
           originalString.forEach((name) => {
             var regExp = /\(([^)]+)\)/;
@@ -378,9 +389,13 @@ function register(iden) {
             ? "None yet - but you could be the first!"
             : newThng.join(", ")) +
           "</p>";
-        // console.log("Document data:", doc.data());
+        var tom = tomorrow.getTime() / 1000;
+        var cardD = cardDate.getTime() / 1000;
         identity = iden;
+        cardDateCurrent = cardD;
         document.getElementById("accept").disabled = false;
+        document.getElementById("accept").style.display =
+          cardD < tom ? "none" : "inline-block";
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
@@ -391,137 +406,91 @@ function register(iden) {
     });
 }
 function write() {
-  // if (confirm("Do you want to unregister for this event?")) {
   var dayOne = new Date();
   var tomorrow = new Date(dayOne);
   tomorrow.setDate(tomorrow.getDate() + 1);
   var ref = db.collection("database2/schedule/TeeTimes").doc(identity);
-  ref.get().then((doc) => {
-    // ga('send', 'event', 'data', 'get', email);
-    var date = new Date(doc.data().start * 1000);
-    var hours = date.getHours().toString().padStart(2, "0");
-    var minutes = date.getMinutes().toString().padStart(2, "0");
-    var date2 = new Date(doc.data().end * 1000);
-    var hours2 = date2.getHours().toString().padStart(2, "0");
-    var minutes2 = date2.getMinutes().toString().padStart(2, "0");
-    var rawDay = document
-      .getElementById(identity)
-      .parentNode.parentNode.id.toString()
-      .substr(3, 8);
-
-    var dat =
-      rawDay.substr(4, 4) +
-      "-" +
-      rawDay.substr(2, 2) +
-      "-" +
-      rawDay.substr(0, 2);
-    var cardDate = Date.parse(dat + "T" + hours + ":" + minutes + ":00");
-    var TorF = Date.today().compareTo(cardDate);
-    console.log(cardDate);
-    console.log(Date.today());
-    console.log(TorF);
-    console.log(cardDate.getTime() / 1000);
-    console.log(tomorrow.getTime() / 1000);
-    var tom = tomorrow.getTime() / 1000;
-    var cardD = cardDate.getTime() / 1000;
-    if (cardD < tom) {
-      alert(
-        "Sorry, you can't register for a lesson less than 24 hours before the event."
-      );
-    } else {
-      ref.update({
-        registered: firebase.firestore.FieldValue.increment(1),
-        signedUp: firebase.firestore.FieldValue.arrayUnion(
-          "(" + name + ") " + email
-        ),
-      });
-    }
-    // if (TorF < 0) {
-    //   alert("Sorry, you can't cancel a lesson 24 hours before the event.");
-    // } else {
-    //   ref.update({
-    //     registered: firebase.firestore.FieldValue.increment(-1),
-    //     signedUp: firebase.firestore.FieldValue.arrayRemove(
-    //       "(" + name + ") " + email
-    //     ),
-    //   });
-    // }
-  });
-  // } else {
-  //   console.log("cancelled");
-  // }
-  // var ref = db.collection("database2/schedule/lessons").doc(identity);
-  // ref.update({
-  //   registered: firebase.firestore.FieldValue.increment(1),
-  //   signedUp: firebase.firestore.FieldValue.arrayUnion(
-  //     "(" + name + ") " + email
-  //   ),
-  // });
+  var cardD = cardDateCurrent;
+  var tom = tomorrow.getTime() / 1000;
+  if (cardD < tom) {
+    alert(
+      "Sorry, you can't register for a lesson less than 24 hours before the event."
+    );
+  } else {
+    ref.update({
+      registered: firebase.firestore.FieldValue.increment(1),
+      signedUp: firebase.firestore.FieldValue.arrayUnion(
+        "(" + name + ") " + email
+      ),
+    });
+  }
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("modalTitle").innerHTML = "Loading...";
   document.getElementById("modalTime").innerHTML = "Loading...";
   document.getElementById("modalthree").innerHTML = "Loading...";
 }
-function overflow(dayToCheck) {
-  db.collection("database2/schedule/TeeTimes")
-    .where("day", "==", dayToCheck)
-    .orderBy("start", "asc")
-    .onSnapshot(function (querySnapshot) {
-      var main = [];
-      var maxAr = [];
-      var registeredAr = [];
-      var signedUpAr = [];
-      querySnapshot.forEach(function (doc) {
-        if (doc.data().max != doc.data().registered) {
-          main.push(doc.id);
-          maxAr.push(doc.data().max);
-          registeredAr.push(doc.data().registered);
-          signedUpAr.push(doc.data().signedUp);
-        }
-      });
-      var exists = false;
-      var available = true;
-      try {
-        if (signedUpAr[0].indexOf("(" + name + ") " + email) != -1) {
-          exists = true;
-        }
-      } catch (err) {
-        console.log(err);
-        exists = false;
-      }
-      if (maxAr[0] == registeredAr[0]) {
-        available = false;
-      } else {
-        available = true;
-      }
-      try {
-        if (exists && available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Unregister";
-        } else if (!exists && available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Register";
-        } else if (!exists && !available) {
-          document.getElementById(main[0]).disabled = true;
-          document.getElementById(main[0]).innerText = "Full";
-        } else if (exists && !available) {
-          document.getElementById(main[0]).disabled = false;
-          document.getElementById(main[0]).innerText = "Unregister";
-        }
-      } catch (err) {
-        console.log("last item not fully registered event");
-      }
-      main.slice(1).forEach((item) => {
-        try {
-          document.getElementById(item).innerText = "Closed";
-          document.getElementById(item).disabled = true;
-        } catch (err) {
-          console.log("couldn't add closed tag");
-        }
-      });
-      // console.log("Current cities in CA: ", cities.join(", "));
-    });
-}
+// function overflow(dayToCheck) {
+//   db.collection("database2/schedule/TeeTimes")
+//     .where("day", "==", dayToCheck)
+//     .orderBy("start", "asc")
+//     .onSnapshot(function (querySnapshot) {
+//       var main = [];
+//       var maxAr = [];
+//       var registeredAr = [];
+//       var signedUpAr = [];
+//       querySnapshot.forEach(function (doc) {
+//         if (doc.data().max != doc.data().registered) {
+//           main.push(doc.id);
+//           maxAr.push(doc.data().max);
+//           registeredAr.push(doc.data().registered);
+//           signedUpAr.push(doc.data().signedUp);
+//         }
+//       });
+//       var exists = false;
+//       var available = true;
+//       try {
+//         if (signedUpAr[0].indexOf("(" + name + ") " + email) != -1) {
+//           exists = true;
+//         }
+//       } catch (err) {
+//         console.log(err);
+//         exists = false;
+//       }
+//       if (maxAr[0] == registeredAr[0]) {
+//         available = false;
+//       } else {
+//         available = true;
+//       }
+//       try {
+//         if (exists && available) {
+//           document.getElementById(main[0]).disabled = false;
+//           document.getElementById(main[0]).innerText = "Unregister";
+//         } else if (!exists && available) {
+//           document.getElementById(main[0]).disabled = false;
+//           document.getElementById(main[0]).innerText = "Register";
+//         } else if (!exists && !available) {
+//           document.getElementById(main[0]).disabled = true;
+//           document.getElementById(main[0]).innerText = "Full";
+//         } else if (exists && !available) {
+//           document.getElementById(main[0]).disabled = false;
+//           document.getElementById(main[0]).innerText = "Unregister";
+//         }
+//       } catch (err) {
+//         console.log("last item not fully registered event");
+//       }
+//       console.log(main);
+//       main.slice(1).forEach((item) => {
+//         try {
+//           console.log("closed");
+//           document.getElementById(item).innerText = "Closed";
+//           document.getElementById(item).disabled = true;
+//         } catch (err) {
+//           console.log("couldn't add closed tag");
+//         }
+//       });
+//       // console.log("Current cities in CA: ", cities.join(", "));
+//     });
+// }
 function nextWeek() {
   if (activePane != maxWeeksToShow - 1) {
     document.getElementById("previous").disabled = false;
@@ -701,8 +670,30 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
+function toggleMoreInfo() {
+  if (document.getElementById("moreInfoDiv").style.display == "none") {
+    document.getElementById("moreInfo").innerHTML = "Less &and;";
+    document.getElementById("moreInfoDiv").style.display = "inline-block";
+    document.getElementById("vNum").innerHTML =
+      dataCacheName + " cache: " + cacheName;
+  } else {
+    document.getElementById("moreInfo").innerHTML = "More &or;";
+    document.getElementById("moreInfoDiv").style.display = "none";
+  }
+}
+
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./service-worker.js").then(function () {
+  navigator.serviceWorker.register("./service-worker.js").then(function (reg) {
     console.log("Service Worker Registered");
+    console.log(reg);
+
+    document.getElementById("updateCheck").addEventListener("click", () => {
+      console.log("checking for updates");
+      reg.update().then(() => {
+        console.log("Service Worker Updated");
+        alert("If there were any available updates, they've been downloaded.");
+        window.location = "/";
+      });
+    });
   });
 }
