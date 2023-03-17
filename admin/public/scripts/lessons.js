@@ -187,7 +187,8 @@ function register(iden) {
       var maxNum = "<input id='maxNum' type='number'/>";
       var descInp = "<input id='descInp' type='text'/>";
       var signedUp;
-      var instructor = "<input type='text' id='instructorInp'>";
+      // var instructor = "<input type='text' id='instructorInp'>";
+      var instructor = "<select id='instructorInp'></select>";
       var listDays = '<input id="days-select" type="date">';
       var originalString = doc.data().signedUp;
       var newThng = [];
@@ -210,11 +211,11 @@ function register(iden) {
       // } catch (err) {
       //   signedUp = "none";
       // }
-      document.getElementById("modalTitle").innerHTML =
-        "Location: <input id='titleInp' type='text' value='" +
-        doc.data().title +
-        "'/>";
+      document.getElementById("modalTitle").innerHTML = "Edit Lesson";
       document.getElementById("modalTime").innerHTML =
+      "<p>Course:</p><input id='titleInp' type='text' value='" +
+      doc.data().title +
+      "'/>" + 
         "<p>Date:</p>" +
         listDays +
         "<p>Start and End Time:</p><input id='startInp' type='time'><input id='endInp' type='time'></br><p>Max Participants:</p>" +
@@ -225,6 +226,13 @@ function register(iden) {
         signedUp +
         "</p><p>Instructor:</p>" +
         instructor;
+      for (var i = 0; i < instructorMasterArray.length; i++) {
+        var optn = instructorMasterArray[i];
+        var el = document.createElement("option");
+        el.textContent = optn;
+        el.value = optn;
+        document.getElementById("instructorInp").appendChild(el);
+      }
       // <a onclick='dwnload()' href='#' id='dwnld'>Download</a>
       document.getElementById("maxNum").value = doc.data().max;
       document.getElementById("descInp").value = doc.data().three;
@@ -363,7 +371,9 @@ function dwnload() {
     parseTime(hours1, mins1) +
     " - " +
     parseTime(hours2, mins2) +
-    "\r\n" + ((actualDo.match(/\r\n/g)||[]).length + 1).toString() + " Participant(s)\r\n-----------------------------\n\n☐ " +
+    "\r\n" +
+    ((actualDo.match(/\r\n/g) || []).length + 1).toString() +
+    " Participant(s)\r\n-----------------------------\n\n☐ " +
     actualDo;
   var myFile = new Blob([fileContent], { type: "text/plain" });
   window.URL = window.URL || window.webkitURL;
@@ -401,9 +411,9 @@ document.getElementById("plus").addEventListener("click", () => {
   var descInp = "<input id='descInp' type='text' value='LESSON'/>";
   var listDays = '<input id="days-select" type="date">';
   var instructor = "<select id='instructorInp'></select>";
-  document.getElementById("modalTitle").innerHTML =
-    "Location: <input id='titleInp' type='text'/>";
+  document.getElementById("modalTitle").innerHTML = "Add Lesson";
   document.getElementById("modalTime").innerHTML =
+  "<p>Course:</p> <input id='titleInp' type='text'/>" + 
     "<p>Day:</p>" +
     listDays +
     "<p>Start and End Time:</p><input id='startInp' type='time'><input id='endInp' type='time'></br><p>Max Participants:</p>" +
@@ -412,12 +422,12 @@ document.getElementById("plus").addEventListener("click", () => {
     descInp +
     "<p>Instructor:</p>" +
     instructor;
-    for (var i = 0; i < instructorMasterArray.length; i++) {
-      var optn = instructorMasterArray[i];
-      var el = document.createElement("option");
-      el.textContent = optn;
-      el.value = optn;
-      document.getElementById("instructorInp").appendChild(el);
+  for (var i = 0; i < instructorMasterArray.length; i++) {
+    var optn = instructorMasterArray[i];
+    var el = document.createElement("option");
+    el.textContent = optn;
+    el.value = optn;
+    document.getElementById("instructorInp").appendChild(el);
   }
   document.querySelector(".modal").classList.toggle("show-modal");
   document.getElementById("newSave").style.display = "inline";
