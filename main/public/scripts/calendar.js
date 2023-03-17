@@ -693,7 +693,7 @@ if ("serviceWorker" in navigator) {
       caches.delete(dataCacheName);
       reg.update().then(() => {
         console.log("Service Worker Updated");
-        alert("If there were any available updates, they've been downloaded.");
+        alert("If there were any available updates, they've been downloaded. To apply the update, close all windows/tabs of this app and reopen.");
         window.location = "/";
       });
     });
