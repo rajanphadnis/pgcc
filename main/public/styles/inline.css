@@ -477,3 +477,9 @@ body {
   letter-spacing: 0.5px;
   color: #ffffff;
 }
+
+.infoLinkWithPicture {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+}
