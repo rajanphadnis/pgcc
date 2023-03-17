@@ -102,10 +102,10 @@ body {
   border: 1px solid black;
   border-radius: 5px;
   background-color: transparent;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3)
+  /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3) */
 }
 #infoButton:hover {
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3)
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3)
 }
 #infoButton p {
   margin: 0px;
