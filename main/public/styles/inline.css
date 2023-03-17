@@ -483,3 +483,7 @@ body {
   flex-direction: row;
   text-decoration: none;
 }
+
+.infoLinkWithPicture span {
+  margin-right: 5px;
+}
