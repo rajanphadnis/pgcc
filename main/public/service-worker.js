@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = "v1.1.3.2";
-var cacheName = "PWA-v1.1.3.2";
+var dataCacheName = "v1.1.4";
+var cacheName = "PWA-v1.1.4";
 var filesToCache = [
   new Request("/index.html", { cache: "no-cache" }),
   new Request("/scripts/calendar.js", { cache: "no-cache" }),
