@@ -688,6 +688,7 @@ if ("serviceWorker" in navigator) {
     console.log(reg);
     document.getElementById("updateCheck").addEventListener("click", () => {
       console.log("checking for updates");
+      document.querySelectorAll('link').forEach((link) => link.href = addTimestamp(link.href));
       caches.delete(cacheName);
       caches.delete(dataCacheName);
       reg.update().then(() => {
