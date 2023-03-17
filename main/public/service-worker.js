@@ -12,63 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = "v1.1.1";
-var cacheName = "PWA-v1.1.1";
+var dataCacheName = "v1.1.2";
+var cacheName = "PWA-v1.1.2";
 var filesToCache = [
-  "/index.html",
-  "/scripts/calendar.js",
-  "/scripts/lessons.js",
-  "/styles/inline.css",
-  "/lessons/index.html",
-  "https://fonts.googleapis.com/icon?family=Material+Icons",
-  "/__/firebase/7.13.2/firebase-auth.js",
-  "/__/firebase/7.13.2/firebase-app.js",
-  "/__/firebase/7.13.2/firebase-firestore.js",
-  "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js",
-  "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css",
+  new Request("/index.html", { cache: "no-cache" }),
+  new Request("/scripts/calendar.js", { cache: "no-cache" }),
+  new Request("/scripts/lessons.js", { cache: "no-cache" }),
+  new Request("/styles/inline.css", { cache: "no-cache" }),
+  new Request("/lessons/index.html", { cache: "no-cache" }),
+  new Request("https://fonts.googleapis.com/icon?family=Material+Icons", {
+    cache: "force-cache",
+  }),
+  new Request("/__/firebase/7.13.2/firebase-auth.js", {
+    cache: "force-cache",
+  }),
+  new Request("/__/firebase/7.13.2/firebase-app.js", {
+    cache: "force-cache",
+  }),
+  new Request("/__/firebase/7.13.2/firebase-firestore.js", {
+    cache: "force-cache",
+  }),
+  new Request("https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js", {
+    cache: "force-cache",
+  }),
+  new Request("https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css", {
+    cache: "force-cache",
+  }),
 ];
 
-// self.addEventListener('install', function(e) {
-//   console.log('[ServiceWorker] Install');
-//   e.waitUntil(
-//     caches.open(cacheName).then(function(cache) {
-//       console.log('[ServiceWorker] Caching app shell');
-//       return cache.addAll(filesToCache);
-//     })
-//   );
-// });
 self.addEventListener("install", function (e) {
   console.log("[ServiceWorker] Install");
   e.waitUntil(
     caches.open(cacheName).then(function (cache) {
       console.log("[ServiceWorker] Caching app shell");
-      return cache.addAll([
-        new Request("/index.html", { cache: "no-cache" }),
-        new Request("/scripts/calendar.js", { cache: "no-cache" }),
-        new Request("/scripts/lessons.js", { cache: "no-cache" }),
-        new Request("/styles/inline.css", { cache: "no-cache" }),
-        new Request("/lessons/index.html", { cache: "no-cache" }),
-        new Request("https://fonts.googleapis.com/icon?family=Material+Icons", {
-          cache: "force-cache",
-        }),
-        new Request("/__/firebase/7.13.2/firebase-auth.js", {
-          cache: "force-cache",
-        }),
-        new Request("/__/firebase/7.13.2/firebase-app.js", {
-          cache: "force-cache",
-        }),
-        new Request("/__/firebase/7.13.2/firebase-firestore.js", {
-          cache: "force-cache",
-        }),
-        new Request(
-          "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js",
-          { cache: "force-cache" }
-        ),
-        new Request(
-          "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css",
-          { cache: "force-cache" }
-        ),
-      ]);
+      return cache.addAll(filesToCache);
     })
   );
 });

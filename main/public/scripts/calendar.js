@@ -686,9 +686,10 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./service-worker.js").then(function (reg) {
     console.log("Service Worker Registered");
     console.log(reg);
-
     document.getElementById("updateCheck").addEventListener("click", () => {
       console.log("checking for updates");
+      caches.delete(cacheName);
+      caches.delete(dataCacheName);
       reg.update().then(() => {
         console.log("Service Worker Updated");
         alert("If there were any available updates, they've been downloaded.");
