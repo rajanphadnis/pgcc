@@ -50,14 +50,14 @@ var tdy = new Date();
 var tdy_dd = String(tdy.getDate()).padStart(2, "0");
 var tdy_mm = String(tdy.getMonth() + 1).padStart(2, "0"); //January is 0!
 var tdy_yyyy = tdy.getFullYear();
-tdy = tdy_dd + "/" + tdy_mm + "/" + tdy_yyyy;
+tdy = tdy_mm + "/" + tdy_dd + "/" + tdy_yyyy;
 
 var tmrw = new Date();
 tmrw.setDate(tmrw.getDate() + 1);
 tmrw_dd = String(tmrw.getDate()).padStart(2, "0");
 tmrw_mm = String(tmrw.getMonth() + 1).padStart(2, "0"); //January is 0!
 tmrw_yyyy = tmrw.getFullYear();
-tmrw = tmrw_dd + "/" + tmrw_mm + "/" + tmrw_yyyy;
+tmrw = tmrw_mm + "/" + tmrw_dd + "/" + tmrw_yyyy;
 
 document.getElementById("today").innerHTML = "Today</br>(" + tdy + ")";
 document.getElementById("tomorrow").innerHTML = "Tomorrow</br>(" + tmrw + ")";
