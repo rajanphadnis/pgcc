@@ -20,7 +20,7 @@ graph LR;
     id12(Firebase Snap of Single Day)
     id17[Check User Registration]
     id18[Edit Event Button Text]
-    id19[All Later Events with Same Instructor are Marked Closed]
+    id19[Run *Closed or not* algorithm]
     id20(["checkDuplicateTime()"])
     
     id13(Firebase Snapshot)
@@ -42,15 +42,12 @@ graph LR;
     subgraph paint[" "]
     direction LR
     addEvent --> overflow
-    overflow --> checkDuplicateTime
+    overflow
         subgraph addEvent["addEvent(docData)"]
         id11 --> id14 --> id15 --> id16
         end
         subgraph overflow["overflow(day)"]
-        id12 --> id17 --> id18 --> id19 --> id20
-        end
-        subgraph checkDuplicateTime["checkDuplicateTime(day)"]
-        id13 --> id21
+        id12 --> id17 --> id18 --> id19
         end
     end
 ```
